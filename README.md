@@ -1,4 +1,5 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# waiting-oaxaca-com
+Web UI for the day-to-day running of Oaxaca's restaurant activities
 
 ## Available Scripts
 
