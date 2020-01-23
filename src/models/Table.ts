@@ -1,11 +1,11 @@
 export interface Table {
-  tableID: number;
+  table_id: number;
 
-  restaurantID: number;
+  restaurant_id: number;
 
-  tableNumber: number;
+  table_number: number;
 
-  isCleaned: boolean;
+  is_cleaned: boolean;
 
-  numberOfSeats: number;
+  number_of_seats: number;
 }

@@ -1,13 +1,13 @@
 export interface Order {
-  orderID: number;
+  order_id: number;
 
-  staffID: number;
+  staff_id: number;
 
-  tableID: number;
+  table_id: number;
 
-  isPaid: boolean;
+  is_paid: boolean;
 
-  dateTimeOrdered: number;
+  date_time_ordered: number;
 
-  satisfactionRating?: number;
+  satisfaction_rating?: number;
 }
