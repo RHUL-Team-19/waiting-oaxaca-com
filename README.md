@@ -1,6 +1,10 @@
 # waiting-oaxaca-com
 Web UI for the day-to-day running of Oaxaca's restaurant activities
 
+## UML Diagram
+
+The UML Diagram created with draw.io can be viewed [here](shorturl.at/agvCK).
+
 ## Available Scripts
 
 In the project directory, you can run:
