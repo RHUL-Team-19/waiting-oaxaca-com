@@ -1,13 +1,15 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'InterBold';
+  src: local('Inter-Bold'), url(./fonts/Inter-Bold.otf) format('otf');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: 'InterRegular';
+  src: local('Inter-Regular'), url(./fonts/Inter-Regular.otf) format('otf');
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'InterRegular';
 }
