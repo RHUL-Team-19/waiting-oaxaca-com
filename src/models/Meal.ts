@@ -1,31 +1,31 @@
-export interface Meal{
-	meal_id : number;
+export interface Meal {
+  meal_id: number;
 
-	name : string;
+  name: string;
 
-	price : number;
+  price: number;
 
-	description : string;
+  description: string;
 
-	is_vegan : boolean;
+  is_vegan: boolean;
 
-	is_vegetarian : boolean;
+  is_vegetarian: boolean;
 
-	does_contain_nuts : boolean;
+  does_contain_nuts: boolean;
 
-	does_contain_gluten : boolean;
+  does_contain_gluten: boolean;
 
-	does_contain_diary : boolean;
+  does_contain_diary: boolean;
 
-	does_contain_lactose : boolean;
+  does_contain_lactose: boolean;
 
-	does_contain_wheat : boolean;
+  does_contain_wheat: boolean;
 
-	does_contain_fish : boolean;
+  does_contain_fish: boolean;
 
-	does_contain_soy : boolean;
+  does_contain_soy: boolean;
 
-	does_contain_egg : boolean;
+  does_contain_egg: boolean;
 
-	image_url : string;
+  image_url: string;
 }
