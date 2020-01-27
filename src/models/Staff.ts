@@ -1,5 +1,4 @@
 export interface Staff{
-
 	staff_id : number;
 
 	role : number;
