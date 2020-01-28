@@ -1,8 +1,15 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import history from '../history';
 import styled from 'styled-components';
 import { Router } from 'react-router-dom';
 import '../style/style.css';
+import RestClient from '../RestClient';
+
+interface Inputs {
+  user_id: string;
+  password: string;
+}
 
 const LoginContainer = styled.div`
   width: 520px;
@@ -16,42 +23,43 @@ const LoginSubmitBtn = styled.div`
 `;
 
 export default class Login extends React.Component {
-  state = {
-    username: '',
+  state: Inputs = {
+    user_id: '',
     password: ''
   };
 
   validate = () => {
-    const {
-      state: { username, password }
-    } = this;
-    // TODO: Replace with JWT authetication?
-    if (username === 'foo' && password === 'bar') {
-      history.push('/home');
-    }
+    RestClient.create<Inputs>('/authentication', this.state).then(res => {
+      if (res.statusCode === 200) history.push('/home');
+      // TODO: Prompt that the creds were invalid
+    });
   };
 
   render() {
     return (
       <Router history={history}>
         <div className="Login">
+          {/* TODO: Add a logo here */}
           <LoginContainer className="box">
             <div className="field">
               <label className="label">Staff ID</label>
-              <div className="control">
+              <div className="control  has-icons-left">
                 <input
                   className="input"
                   type="text"
                   placeholder="Enter your Staff ID"
                   onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
-                    this.setState({ username: evt.target.value })
+                    this.setState({ user_id: evt.target.value })
                   }
                 />
+                <span className="icon is-small is-left">
+                  <i className="fas fa-user"></i>
+                </span>
               </div>
             </div>
             <div className="field">
               <label className="label">Password</label>
-              <p className="control">
+              <p className="control  has-icons-left">
                 <input
                   className="input"
                   type="password"
@@ -60,6 +68,9 @@ export default class Login extends React.Component {
                     this.setState({ password: evt.target.value })
                   }
                 />
+                <span className="icon is-small is-left">
+                  <i className="fas fa-lock"></i>
+                </span>
               </p>
             </div>
             <LoginSubmitBtn className="control">
