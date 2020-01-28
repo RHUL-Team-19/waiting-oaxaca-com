@@ -1,19 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import Login from './Login';
+import Login from './pages/Login';
+import history from './history';
 import * as serviceWorker from './serviceWorker';
-import { createBrowserHistory } from 'history';
-import { Router, Route, Redirect } from 'react-router-dom';
-
-const history = createBrowserHistory();
+import Home from './pages/Home';
+import { Router, Route, Redirect, Switch } from 'react-router-dom';
 
 ReactDOM.render(
   <Router history={history}>
     <Redirect to="/login" />
-    <Route exact path="/login">
-      <Login />
-    </Route>
+    <Switch>
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/home" component={Home} />
+    </Switch>
   </Router>,
   document.getElementById('root')
 );
