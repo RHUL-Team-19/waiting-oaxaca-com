@@ -1,10 +1,9 @@
 export interface OrderMeal {
-  order_Meal_Id : number;
+  order_meal_id: number;
 
-  order_Id : number;
+  order_id: number;
 
-  meal_Id : number;
+  meal_id: number;
 
-  date_Time_Prepared? : number;
-
+  date_time_prepared?: string;
 }

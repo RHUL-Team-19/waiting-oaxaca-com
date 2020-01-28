@@ -7,7 +7,7 @@ export interface Order {
 
   is_paid: boolean;
 
-  date_time_ordered: number;
+  date_time_ordered: string;
 
   satisfaction_rating?: number;
 }
