@@ -29,17 +29,19 @@ export default class Login extends React.Component {
   };
 
   validate = () => {
-    RestClient.create<Inputs>('/authentication', this.state).then(res => {
-      if (res.statusCode === 200) history.push('/home');
-      // TODO: Prompt that the creds were invalid
-    });
+    RestClient.create<Inputs>('/authentication', this.state)
+      .then(res => {
+        if (res.statusCode === 200) history.push('/home');
+        // TODO: Prompt that the creds were invalid (see https://bulma.io/documentation/elements/notification/)
+      })
+      .catch(console.error);
   };
 
   render() {
     return (
       <Router history={history}>
         <div className="Login">
-          {/* TODO: Add a logo here */}
+          {/* TODO: Add a logo here (see https://bulma.io/documentation/elements/image/) */}
           <LoginContainer className="box">
             <div className="field">
               <label className="label">Staff ID</label>
@@ -78,7 +80,7 @@ export default class Login extends React.Component {
                 className="button is-link is-fullwidth"
                 onClick={this.validate}
               >
-                Submit
+                Login
               </button>
             </LoginSubmitBtn>
           </LoginContainer>
