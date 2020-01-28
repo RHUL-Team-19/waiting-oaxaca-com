@@ -1,5 +1,6 @@
 import React from 'react';
 import NavOption from './NavOption';
+import { redirect } from '../Util';
 
 const Navbar = () => (
   <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -15,7 +16,9 @@ const Navbar = () => (
 
     <div id="navbarBasicExample" className="navbar-menu">
       <div className="navbar-start">
-        <a className="navbar-item">Home</a>
+        <a className="navbar-item" onClick={() => redirect('home')}>
+          Home
+        </a>
         <NavOption option="restaurants" />
         <NavOption option="menu" />
         <NavOption option="staff" />
