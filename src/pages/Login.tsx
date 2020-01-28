@@ -25,7 +25,7 @@ export default class Login extends React.Component {
     const {
       state: { username, password }
     } = this;
-    console.log(username, password);
+    // TODO: Replace with JWT authetication?
     if (username === 'foo' && password === 'bar') {
       history.push('/home');
     }
@@ -43,6 +43,9 @@ export default class Login extends React.Component {
                   className="input"
                   type="text"
                   placeholder="Enter your Staff ID"
+                  onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
+                    this.setState({ username: evt.target.value })
+                  }
                 />
               </div>
             </div>
@@ -53,6 +56,9 @@ export default class Login extends React.Component {
                   className="input"
                   type="password"
                   placeholder="Enter your password"
+                  onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
+                    this.setState({ password: evt.target.value })
+                  }
                 />
               </p>
             </div>
