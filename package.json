@@ -32,6 +32,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "css-build": "node-sass --omit-source-map-url src/style/style.scss src/style/style.css",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
