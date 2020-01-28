@@ -16,9 +16,9 @@ const Navbar = () => (
     <div id="navbarBasicExample" className="navbar-menu">
       <div className="navbar-start">
         <a className="navbar-item">Home</a>
-        <NavOption option="Restaurants" />
-        <NavOption option="Menu" />
-        <NavOption option="Staff" />
+        <NavOption option="restaurants" />
+        <NavOption option="menu" />
+        <NavOption option="staff" />
       </div>
 
       <div className="navbar-end">
