@@ -3,8 +3,9 @@ import React from 'react';
 import history from '../history';
 import styled from 'styled-components';
 import { Router } from 'react-router-dom';
-import '../style/style.css';
 import RestClient from '../RestClient';
+import { redirect } from '../Util';
+import '../style/style.css';
 
 interface Inputs {
   user_id: string;
@@ -31,7 +32,7 @@ export default class Login extends React.Component {
   validate = () => {
     RestClient.create<Inputs>('/authentication', this.state)
       .then(res => {
-        if (res.statusCode === 200) history.push('/home');
+        if (res.statusCode === 200) redirect('/home');
         // TODO: Prompt that the creds were invalid (see https://bulma.io/documentation/elements/notification/)
       })
       .catch(console.error);
