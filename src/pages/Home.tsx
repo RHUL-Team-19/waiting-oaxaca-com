@@ -10,7 +10,7 @@ export default class Home extends React.Component {
     return (
       <Router history={history}>
         <Navbar />
-        <MainBox />
+        <MainBox>{/* TODO: Add a dashboard here? */}</MainBox>
       </Router>
     );
   }

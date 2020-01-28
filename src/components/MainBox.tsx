@@ -9,6 +9,8 @@ const StyledBox = styled.div`
   height: 836px;
 `;
 
-const MainBox = () => <StyledBox className="box" />;
+// This is just done to workaround a typing bug
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MainBox = ({ ..._ }) => <StyledBox className="box" />;
 
 export default MainBox;
