@@ -4,14 +4,20 @@ import PropTypes from 'prop-types';
 import Navbar from '../components/Navbar';
 import history from '../history';
 
-export default abstract class Module extends React.Component {
+// TODO: Properly type the Props
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default abstract class Module extends React.Component<any, any> {
   private section: string;
 
-  static propTypes: { section: PropTypes.Requireable<string> };
+  static propTypes: {
+    match: PropTypes.Requireable<
+      PropTypes.InferProps<{ path: PropTypes.Requireable<string> }>
+    >;
+  };
 
-  constructor(props: Readonly<{ section: string }>) {
+  constructor(props: Readonly<{ match: { path: string } }>) {
     super(props);
-    this.section = props.section;
+    this.section = props.match.path;
   }
 
   abstract find(): JSX.Element;
@@ -24,12 +30,12 @@ export default abstract class Module extends React.Component {
     return (
       <Router history={history}>
         <Navbar />
-        <Route path={`/${this.section}/find`} render={this.find} />
-        <Route path={`/${this.section}/view`} render={this.view} />
-        <Route path={`/${this.section}/create`} render={this.create} />
+        <Route path={`${this.section}/find`} render={this.find} />
+        <Route path={`${this.section}/view`} render={this.view} />
+        <Route path={`${this.section}/create`} render={this.create} />
       </Router>
     );
   }
 }
 
-Module.propTypes = { section: PropTypes.string };
+Module.propTypes = { match: PropTypes.shape({ path: PropTypes.string }) };
