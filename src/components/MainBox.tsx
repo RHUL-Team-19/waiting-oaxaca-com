@@ -6,7 +6,7 @@ const StyledBox = styled.div`
   margin-left: auto;
   width: 95%;
   margin-right: auto;
-  height: 610px;
+  height: calc(100vh - 120px);
 `;
 
 // This is just done to workaround a typing bug
