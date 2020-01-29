@@ -1,4 +1,4 @@
-import history from './history';
+import history from '../history';
 
 export const capitalise = (word: string) =>
   word.replace(/./, firstLetter => firstLetter.toUpperCase());

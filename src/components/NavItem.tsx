@@ -1,5 +1,5 @@
 import React from 'react';
-import { redirect, capitalise } from '../Util';
+import { redirect, capitalise } from '../util/Util';
 
 const NavItem = ({
   selected,

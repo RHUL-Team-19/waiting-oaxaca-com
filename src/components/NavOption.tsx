@@ -2,7 +2,7 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import history from '../history';
 import NavItem from './NavItem';
-import { capitalise } from '../Util';
+import { capitalise } from '../util/Util';
 
 const NavOption = ({ option }: { option: string }) => (
   <Router history={history}>
