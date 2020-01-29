@@ -5,36 +5,203 @@ import { Router, Route } from 'react-router-dom';
 import MainBox from '../components/MainBox';
 import history from '../history';
 import { redirect } from '../util/Util';
+import { Restaurant } from '../models/Restaurant';
 
-// TODO: Render each field from the model in a container?
+const mockRestaurants: Restaurant[] = [
+  {
+    restaurant_id: 123,
+    name: 'oaxaca',
+    telephone_number: 123456789,
+    location: '123 Some Road\nLondon\nABC 123'
+  }
+];
+
+// TODO: Redesign this
+const renderAll = () => (
+  <table className="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+
+    {mockRestaurants.map(({ restaurant_id, name }) => {
+      return (
+        <tbody key={restaurant_id}>
+          <tr>
+            <th>{restaurant_id}</th>
+            <td>{name}</td>
+            <td>
+              <button
+                className="button is-warning is-small"
+                onClick={() => redirect(`restaurants/find/${restaurant_id}`)}
+              >
+                <span className="icon is-small">
+                  <i className="fas fa-edit"></i>
+                </span>
+                <span>Edit</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      );
+    })}
+  </table>
+);
+
 const renderSingle = (props: {
-  match: { params: { restaurant_id: number } };
-}) => <h1>rendering {props.match.params.restaurant_id}</h1>;
+  match: { params: { restaurant_id: number | string } };
+}) => {
+  if (props.match.params.restaurant_id === 'all') return renderAll();
+  // TODO: Replace with API get to /restaurants/:id
+  const restaurant = mockRestaurants.find(
+    ({ restaurant_id }) =>
+      restaurant_id === Number(props.match.params.restaurant_id)
+  );
+  // TODO: Handle invalid ids
+  return (
+    <Router history={history}>
+      <div
+        className="container"
+        style={{
+          width: 'calc(100vh - 120px)',
+          top: 'calc(100vh - 750px)'
+        }}
+      >
+        <div className="field is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label">ID</label>
+          </div>
+          <div className="field-body">
+            <div className="field">
+              <p className="control">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder={props.match.params.restaurant_id.toString()}
+                  disabled
+                />
+              </p>
+            </div>
+          </div>
+        </div>
 
-// TODO: List of scrollable list that can be clicked to expand more details
-const renderAll = () => <h1>rendering all</h1>;
+        <div className="field is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label">Name</label>
+          </div>
+          <div className="field-body">
+            <div className="field">
+              <p className="control">
+                <input
+                  defaultValue={restaurant?.name}
+                  className="input"
+                  type="text"
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="field is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label">Telephone number</label>
+          </div>
+          <div className="field-body">
+            <div className="field">
+              <div className="field has-addons">
+                <p className="control">
+                  <a className="button is-static">+44</a>
+                </p>
+                <p className="control">
+                  <input
+                    defaultValue={restaurant?.telephone_number}
+                    className="input"
+                    type="tel"
+                    placeholder="Restaurant phone number"
+                  />
+                </p>
+              </div>
+              <p className="help">Do not enter the first zero</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="field is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label">Location</label>
+          </div>
+          <div className="field-body">
+            <div className="field">
+              <div className="control">
+                <textarea
+                  defaultValue={restaurant?.location}
+                  className="textarea"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="field is-grouped is-grouped-right">
+          <p className="control">
+            {/* TODO: Make API call onClick */}
+            <button className="button is-success">
+              <span className="icon is-small">
+                <i className="fas fa-check"></i>
+              </span>
+              <span>Save</span>
+            </button>
+          </p>
+          <p className="control">
+            {/* TODO: Make API call onClick */}
+            <button className="button is-danger">
+              <span>Delete</span>
+              <span className="icon is-small">
+                <i className="fas fa-times"></i>
+              </span>
+            </button>
+          </p>
+          <p className="control">
+            {/* TODO: Reset fields onClick */}
+            <a className="button is-light">Reset</a>
+          </p>
+        </div>
+      </div>
+    </Router>
+  );
+};
 
 export default class Restaurants extends Module {
   state = { restaurant_id: 'all' };
 
-  constructor() {
-    super({ section: 'restaurants' });
+  constructor(props: { match: { path: string } }) {
+    super(props);
   }
 
   find = () => {
+    if (this.props.location.pathname.split('/').length === 4) {
+      return (
+        <MainBox>
+          <Route
+            path="/restaurants/find/:restaurant_id"
+            render={renderSingle}
+          />
+        </MainBox>
+      );
+    }
     return (
       <Router history={history}>
         <MainBox>
           <div>
-            <Route
-              path="/restaurants/find/:restaurant_id"
-              render={renderSingle}
-            />
             <div
               className="field has-addons"
               style={{
-                marginTop: '235px',
-                marginLeft: '535px'
+                justifyContent: 'center',
+                height: '77vh',
+                display: 'flex',
+                alignItems: 'center'
               }}
             >
               <div className="control">
