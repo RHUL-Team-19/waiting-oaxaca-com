@@ -1,14 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Router, Route } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import history from '../history';
+import Module from '../util/Module';
+import { Router } from 'react-router-dom';
 import MainBox from '../components/MainBox';
+import history from '../history';
 
-// TODO: Refactor this into a dynamic nested route handler
+export default class Restaurants extends Module {
+  constructor() {
+    super({ section: 'restaurants' });
+  }
 
-class FindRestaurant extends React.Component {
-  render() {
+  find() {
     return (
       <Router history={history}>
         <MainBox>
@@ -17,10 +18,8 @@ class FindRestaurant extends React.Component {
       </Router>
     );
   }
-}
 
-class ViewRestaurant extends React.Component {
-  render() {
+  view() {
     return (
       <Router history={history}>
         <MainBox>
@@ -29,10 +28,8 @@ class ViewRestaurant extends React.Component {
       </Router>
     );
   }
-}
 
-class CreateRestaurant extends React.Component {
-  render() {
+  create() {
     return (
       <Router history={history}>
         <MainBox>
@@ -42,21 +39,3 @@ class CreateRestaurant extends React.Component {
     );
   }
 }
-
-const Restaurants = ({ match }: { match: { url: string } }) => {
-  console.log(match);
-  return (
-    <Router history={history}>
-      <Navbar />
-      <Route path={`${match.url}/find`} component={FindRestaurant} />
-      <Route path={`${match.url}/find`} component={ViewRestaurant} />
-      <Route path={`${match.url}/create`} component={CreateRestaurant} />
-    </Router>
-  );
-};
-
-Restaurants.propTypes = {
-  match: PropTypes.shape({ url: PropTypes.string })
-};
-
-export default Restaurants;
