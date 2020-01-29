@@ -242,9 +242,7 @@ export default class Restaurants extends Module {
   view() {
     return (
       <Router history={history}>
-        <MainBox>
-          {/* TODO: Fetch restaurants from the API, add sort buttons */}
-        </MainBox>
+        <MainBox>{renderAll()}</MainBox>
       </Router>
     );
   }
@@ -253,7 +251,85 @@ export default class Restaurants extends Module {
     return (
       <Router history={history}>
         <MainBox>
-          {/* TODO: Display a form that has input fields for all fields on the Restaurants model */}
+          <div
+            className="container"
+            style={{
+              width: 'calc(100vh - 120px)',
+              top: 'calc(100vh - 750px)'
+            }}
+          >
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Name</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <p className="control">
+                    <input
+                      placeholder="Enter the restaurant's name"
+                      className="input"
+                      type="text"
+                    />
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Telephone number</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <div className="field has-addons">
+                    <p className="control">
+                      <a className="button is-static">+44</a>
+                    </p>
+                    <p className="control">
+                      <input
+                        className="input"
+                        type="tel"
+                        placeholder="Enter the restaurant's phone number"
+                      />
+                    </p>
+                  </div>
+                  <p className="help">Do not enter the first zero</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Location</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <div className="control">
+                    <textarea
+                      placeholder="Enter the restaurant's location"
+                      className="textarea"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="field is-grouped is-grouped-right">
+              <p className="control">
+                {/* TODO: Make API call onClick */}
+                <button className="button is-success">
+                  <span className="icon is-small">
+                    <i className="fas fa-plus-circle"></i>
+                  </span>
+                  <span>Create</span>
+                </button>
+              </p>
+              <p className="control">
+                {/* TODO: Reset fields onClick */}
+                <a className="button is-light">Clear</a>
+              </p>
+            </div>
+          </div>
         </MainBox>
       </Router>
     );
