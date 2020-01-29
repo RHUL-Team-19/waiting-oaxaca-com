@@ -21,7 +21,6 @@ export default abstract class Module extends React.Component {
   abstract create(): JSX.Element;
 
   render(): ReactNode {
-    console.log('rendering');
     return (
       <Router history={history}>
         <Navbar />
