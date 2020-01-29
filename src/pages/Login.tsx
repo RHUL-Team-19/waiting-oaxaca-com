@@ -31,8 +31,11 @@ export default class Login extends React.Component {
   validate = () => {
     RestClient.create<Inputs>('/authentication', this.state)
       .then(res => {
-        if (res.statusCode === 200) history.push('/home');
-        // TODO: Prompt that the creds were invalid (see https://bulma.io/documentation/elements/notification/)
+        if (res.statusCode === 200) {history.push('/home')};
+        <div class="notification is-warning">
+          <button class="invalid information"></button>
+        </div>
+        //Prompt that the creds were invalid (see https://bulma.io/documentation/elements/notification/)
       })
       .catch(console.error);
   };
