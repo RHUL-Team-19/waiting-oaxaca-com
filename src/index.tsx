@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Login from './pages/Login';
-import history from './history';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
+import history from './history';
+import Login from './pages/Login';
 import Home from './pages/Home';
-import { Router, Route, Redirect, Switch } from 'react-router-dom';
+import Restaurants from './pages/Restaurants';
 
 ReactDOM.render(
   <Router history={history}>
@@ -12,6 +13,7 @@ ReactDOM.render(
     <Switch>
       <Route exact path="/login" component={Login} />
       <Route exact path="/home" component={Home} />
+      <Route path="/restaurants" component={Restaurants} />
     </Switch>
   </Router>,
   document.getElementById('root')

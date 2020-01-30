@@ -6,11 +6,13 @@ const StyledBox = styled.div`
   margin-left: auto;
   width: 95%;
   margin-right: auto;
-  height: 836px;
+  height: calc(100vh - 120px);
 `;
 
 // This is just done to workaround a typing bug
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const MainBox = ({ ..._ }) => <StyledBox className="box" />;
+const MainBox = (props: { children: JSX.Element }) => (
+  <StyledBox className="box">{props.children}</StyledBox>
+);
 
 export default MainBox;
