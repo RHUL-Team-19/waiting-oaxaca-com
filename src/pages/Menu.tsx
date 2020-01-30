@@ -1,17 +1,14 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import Module from '../util/Module';
-import usePromise from 'react-promise';
 import MainBox from '../components/MainBox';
 import { Route, Router } from 'react-router-dom';
-import { redirect } from '../util/Util';
+import { redirect, capitalise } from '../util/Util';
 import history from '../history';
-import RestClient from '../RestClient';
 import { Meal } from '../models/Meal';
 
-// TODO: Render each field from the model in a container
-const renderSingle = (props: { match: { params: { meal_id: number } } }) => {
-  const meal = {
+const mockMenu: Meal[] = [
+  {
     meal_id: 2,
     name: 'Tacos',
     price: 0.5,
@@ -28,42 +25,204 @@ const renderSingle = (props: { match: { params: { meal_id: number } } }) => {
     does_contain_gluten: true,
     does_contain_dairy: true,
     image_url: 'https://objects.wsantos.net/oaxaca-com/menu/images/tacos.jpg'
-  };
+  }
+];
+
+const renderAll = () => (
+  <table className="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+
+    {mockMenu.map(({ meal_id, name }) => {
+      return (
+        <tbody key={meal_id}>
+          <tr>
+            <th>{meal_id}</th>
+            <td>{name}</td>
+            <td>
+              <button
+                className="button is-warning is-small"
+                onClick={() => redirect(`menu/find/${meal_id}`)}
+              >
+                <span className="icon is-small">
+                  <i className="fas fa-edit"></i>
+                </span>
+                <span>Edit</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      );
+    })}
+  </table>
+);
+
+const renderSingle = (props: {
+  match: { params: { meal_id: number | string } };
+}) => {
+  if (props.match.params.meal_id === 'all') return renderAll();
+  const meal = mockMenu.find(
+    ({ meal_id }) => meal_id === Number(props.match.params.meal_id)
+  );
   return (
     <div
       className="card is-centered"
       style={{
         width: '452px',
         margin: 'auto',
-        marginTop: '70px'
+        marginTop: '20px'
       }}
     >
       <div className="card-image">
-        <figure className="image is-300x180">
+        <figure className="image is-150x120">
           <img src={meal?.image_url} alt="Placeholder image" />
         </figure>
       </div>
       <div className="card-content">
         <div className="media">
-          <div className="media-content">
-            <p className="title is-4">{meal?.name}</p>
+          <div className="field is-horizontal">
+            <div className="field-label is-normal">
+              <label className="label">ID</label>
+            </div>
+            <div className="field-body">
+              <div className="field">
+                <p className="control">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder={meal?.meal_id.toString()}
+                    disabled
+                    style={{ width: '40px' }}
+                  />
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="field is-horizontal">
+            <div className="field-label is-normal">
+              <label className="label" style={{ marginLeft: '25px' }}>
+                Name
+              </label>
+            </div>
+            <div className="field-body">
+              <div className="field">
+                <p className="control">
+                  <input
+                    defaultValue={meal?.name}
+                    className="input"
+                    type="text"
+                  />
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="content">
-          {meal?.description}
-          <br />
+        <div className="field has-addons is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label">Price</label>
+          </div>
+          <p className="control">
+            <p className="control">
+              <a className="button is-static">£</a>
+            </p>
+          </p>
+          <p className="control">
+            <input
+              className="input"
+              type="text"
+              defaultValue={meal?.price.toFixed(2)}
+            />
+          </p>
         </div>
+        <br />
+
+        <div className="content">
+          <div className="field is-horizontal">
+            <div className="field-label is-normal">
+              <label className="label">Description</label>
+            </div>
+            <div className="field-body">
+              <div className="field">
+                <div className="control">
+                  <textarea
+                    defaultValue={meal?.description}
+                    className="textarea"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="field is-grouped is-grouped-multiline">
+          {Object.entries(meal!)
+            .filter(
+              ([field]) => field.startsWith('does') || field.startsWith('is')
+            )
+            .map(([field, checked], i) => {
+              const splittedField = field.split('_').slice(1);
+              if (field.startsWith('d')) {
+                const [contain, allergen] = splittedField;
+                field = `${capitalise(contain)}s ${allergen}`;
+              } else {
+                const [veg] = splittedField;
+                field = capitalise(veg);
+              }
+              return (
+                <div key={i} style={{ padding: '10px' }}>
+                  <input
+                    className="is-checkradio is-rtl is-circle"
+                    id="exampleRtlCheckbox"
+                    type="checkbox"
+                    name="exampleRtlCheckbox"
+                    checked={checked as boolean}
+                  />
+                  <label className="label" htmlFor="exampleRtlCheckbox">
+                    {field}
+                  </label>
+                </div>
+              );
+            })}
+        </div>
+
+        <br />
       </div>
+      <footer className="card-footer">
+        <p className="card-footer-item">
+          {/* TODO: Make API call onClick */}
+          <button className="button is-success">
+            <span className="icon is-small">
+              <i className="fas fa-check"></i>
+            </span>
+            <span>Save</span>
+          </button>
+        </p>
+        <p className="card-footer-item">
+          {/* TODO: Make API call onClick */}
+          <button className="button is-danger">
+            <span>Delete</span>
+            <span className="icon is-small">
+              <i className="fas fa-times"></i>
+            </span>
+          </button>
+        </p>
+        <p className="card-footer-item">
+          {/* TODO: Make API call onClick */}
+          <a className="button is-light">Reset</a>
+        </p>
+      </footer>
     </div>
   );
 };
 
-// TODO: List of scrollable list that can be clicked to expand more details
-const renderAll = () => <h1>rendering all</h1>;
-
 export default class Menu extends Module {
-  state = { meal_id: 'all' }
+  state = { meal_id: 'all' };
 
   find = () => {
     if (this.props.location.pathname.split('/').length === 4) {
