@@ -56,7 +56,7 @@ const renderSingle = (props: {
   match: { params: { staff_id: number | string } };
 }) => {
   if (props.match.params.staff_id === 'all') return renderAll();
-  // TODO: Replace with API get to /stff/:id
+  // TODO: Replace with API get to /staff/:id
   const staff = mockStaff.find(
     ({ staff_id }) => staff_id === Number(props.match.params.staff_id)
   );
@@ -252,7 +252,7 @@ export default class Staff extends Module {
   view() {
     return (
       <Router history={history}>
-        {/* TODO: Fetch the staff from the API, add sort buttons */}
+        <MainBox>{renderAll()}</MainBox>
       </Router>
     );
   }
@@ -261,7 +261,101 @@ export default class Staff extends Module {
     return (
       <Router history={history}>
         <MainBox>
-          {/* TODO: Display a form that has input fields for all fields on the Staff model */}
+          <div
+            className="container"
+            style={{
+              width: 'calc(100vh - 120px)',
+              top: 'calc(100vh - 750px)'
+            }}
+          >
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Restaurant ID</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <p className="control">
+                    <input
+                      placeholder="Enter the restaurant's ID"
+                      className="input"
+                      type="text"
+                    />
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Full Name</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <p className="control">
+                    <input
+                      placeholder="Enter the staff's full name"
+                      className="input"
+                      type="text"
+                    />
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Password</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <p className="control  has-icons-left">
+                    <input
+                      className="input"
+                      type="password"
+                      placeholder="Enter the staff's password"
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fas fa-lock"></i>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Passed training</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <input
+                    id="switchColorDefault"
+                    type="checkbox"
+                    name="switchColorDefault"
+                    className="switch"
+                    checked={false}
+                  />
+                  <label htmlFor="switchColorDefault"></label>
+                </div>
+              </div>
+            </div>
+
+            <div className="field is-grouped is-grouped-right">
+              <p className="control">
+                {/* TODO: Make API call onClick */}
+                <button className="button is-success">
+                  <span className="icon is-small">
+                    <i className="fas fa-plus-circle"></i>
+                  </span>
+                  <span>Create</span>
+                </button>
+              </p>
+              <p className="control">
+                {/* TODO: Reset fields onClick */}
+                <a className="button is-light">Clear</a>
+              </p>
+            </div>
+          </div>
         </MainBox>
       </Router>
     );
