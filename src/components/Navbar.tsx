@@ -2,7 +2,6 @@ import React from 'react';
 import NavOption from './NavOption';
 import { redirect } from '../util/Util';
 
-
 const Navbar = () => (
   <nav className="navbar" role="navigation" aria-label="main navigation">
     <div className="navbar-brand">

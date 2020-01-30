@@ -15,7 +15,7 @@ export interface Meal {
 
   does_contain_gluten: boolean;
 
-  does_contain_diary: boolean;
+  does_contain_dairy: boolean;
 
   does_contain_lactose: boolean;
 
