@@ -18,7 +18,7 @@ const mockRestaurants: Restaurant[] = [
 
 // TODO: Redesign this
 const renderAll = () => (
-  <table className="table is-fullwidth">
+  <table className="table is-fullwidth" style={{ marginLeft: '280px' }}>
     <thead>
       <tr>
         <th>ID</th>
@@ -66,7 +66,7 @@ const renderSingle = (props: {
         className="container"
         style={{
           width: 'calc(100vh - 120px)',
-          top: 'calc(100vh - 750px)'
+          top: 'calc(100vh - 610px)'
         }}
       >
         <div className="field is-horizontal">
@@ -255,7 +255,7 @@ export default class Restaurants extends Module {
             className="container"
             style={{
               width: 'calc(100vh - 120px)',
-              top: 'calc(100vh - 750px)'
+              top: 'calc(100vh - 610px)'
             }}
           >
             <div className="field is-horizontal">
