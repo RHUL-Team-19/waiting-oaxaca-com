@@ -5,14 +5,188 @@ import { Router, Route } from 'react-router-dom';
 import MainBox from '../components/MainBox';
 import history from '../history';
 import { redirect } from '../util/Util';
+import { Staff as StaffModel } from '../models/Staff';
 
-// TODO: Render each field from the model in a container
-const renderAll = () => <h1>rendering all</h1>;
+const mockStaff: StaffModel[] = [
+  {
+    staff_id: 123,
+    restaurant_id: 345,
+    full_name: 'Jim Bob',
+    password: 'Zm9v',
+    has_passed_training: true
+  }
+];
 
-// TODO: List of scrollable list that can be clicked to expand more details
+// TODO: Redesign this
+const renderAll = () => (
+  <table className="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Restaurant ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+
+    {mockStaff.map(({ staff_id, restaurant_id, full_name }) => {
+      return (
+        <tbody key={staff_id}>
+          <tr>
+            <th>{staff_id}</th>
+            <th>{restaurant_id}</th>
+            <td>{full_name}</td>
+            <td>
+              <button
+                className="button is-warning is-small"
+                onClick={() => redirect(`staff/find/${staff_id}`)}
+              >
+                <span className="icon is-small">
+                  <i className="fas fa-edit"></i>
+                </span>
+                <span>Edit</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      );
+    })}
+  </table>
+);
 const renderSingle = (props: {
   match: { params: { staff_id: number | string } };
-}) => <h1>rendering {props.match.params.staff_id}</h1>;
+}) => {
+  if (props.match.params.staff_id === 'all') return renderAll();
+  // TODO: Replace with API get to /stff/:id
+  const staff = mockStaff.find(
+    ({ staff_id }) => staff_id === Number(props.match.params.staff_id)
+  );
+  // TODO: Handle invalid ids
+  return (
+    <Router history={history}>
+      <div
+        className="container"
+        style={{
+          width: 'calc(100vh - 120px)',
+          top: 'calc(100vh - 750px)'
+        }}
+      >
+        <div className="field is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label">ID</label>
+          </div>
+          <div className="field-body">
+            <div className="field">
+              <p className="control">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder={props.match.params.staff_id.toString()}
+                  disabled
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="field is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label">Restaurant ID</label>
+          </div>
+          <div className="field-body">
+            <div className="field">
+              <p className="control">
+                <input
+                  defaultValue={staff?.restaurant_id}
+                  className="input"
+                  type="text"
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="field is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label">Full Name</label>
+          </div>
+          <div className="field-body">
+            <div className="field">
+              <p className="control">
+                <input
+                  defaultValue={staff?.full_name}
+                  className="input"
+                  type="text"
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="field is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label">Password</label>
+          </div>
+          <div className="field-body">
+            <div className="field">
+              <p className="control">
+                <input
+                  defaultValue={atob(staff!.password)}
+                  className="input"
+                  type="text"
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="field is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label">Passed training</label>
+          </div>
+          <div className="field-body">
+            <div className="field">
+              <div className="field">
+                <input
+                  id="switchColorDefault"
+                  type="checkbox"
+                  name="switchColorDefault"
+                  className="switch"
+                  checked={staff?.has_passed_training}
+                />
+                <label htmlFor="switchColorDefault"></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="field is-grouped is-grouped-right">
+          <p className="control">
+            {/* TODO: Make API call onClick */}
+            <button className="button is-success">
+              <span className="icon is-small">
+                <i className="fas fa-check"></i>
+              </span>
+              <span>Save</span>
+            </button>
+          </p>
+          <p className="control">
+            {/* TODO: Make API call onClick */}
+            <button className="button is-danger">
+              <span>Delete</span>
+              <span className="icon is-small">
+                <i className="fas fa-times"></i>
+              </span>
+            </button>
+          </p>
+          <p className="control">
+            {/* TODO: Reset fields onClick */}
+            <a className="button is-light">Reset</a>
+          </p>
+        </div>
+      </div>
+    </Router>
+  );
+};
 
 export default class Staff extends Module {
   state = { staff_id: 'all' };
