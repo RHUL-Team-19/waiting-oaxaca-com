@@ -281,7 +281,7 @@ export default class Menu extends Module {
   view() {
     return (
       <Router history={history}>
-        {/* TODO: Fetch the menu from the API, add sort buttons */}
+        <MainBox>{renderAll()}</MainBox>
       </Router>
     );
   }
