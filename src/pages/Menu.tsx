@@ -29,7 +29,7 @@ const mockMenu: Meal[] = [
 ];
 
 const renderAll = () => (
-  <table className="table is-fullwidth">
+  <table className="table is-fullwidth" style={{ marginLeft: '280px' }}>
     <thead>
       <tr>
         <th>ID</th>
@@ -294,7 +294,7 @@ export default class Menu extends Module {
             className="container"
             style={{
               width: 'calc(100vh - 120px)',
-              top: 'calc(100vh - 750px)'
+              top: 'calc(100vh - 720px)'
             }}
           >
             <div className="field is-horizontal">
