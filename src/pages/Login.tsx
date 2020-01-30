@@ -4,9 +4,8 @@ import history from '../history';
 import styled from 'styled-components';
 import { Router } from 'react-router-dom';
 import RestClient from '../RestClient';
-import { redirect } from '../Util';
+import { redirect } from '../util/Util';
 import '../style/style.css';
-
 
 interface Inputs {
   user_id: string;
