@@ -26,7 +26,7 @@ const Navbar = () => (
 
       <div className="navbar-end">
         <div className="navbar-item">
-          <div className="buttons">
+          <div className="buttons" onClick={() => redirect('login')}>
             <a className="button is-primary">
               <strong>Sign out</strong>
             </a>
