@@ -290,7 +290,117 @@ export default class Menu extends Module {
     return (
       <Router history={history}>
         <MainBox>
-          {/* TODO: Display a form that has input fields for all fields on the Menu model */}
+          <div
+            className="container"
+            style={{
+              width: 'calc(100vh - 120px)',
+              top: 'calc(100vh - 750px)'
+            }}
+          >
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Name</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <p className="control">
+                    <input
+                      placeholder="Enter the meal's name"
+                      className="input"
+                      type="text"
+                    />
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="field has-addons is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Price</label>
+              </div>
+              <div className="field-body">
+                <p className="control">
+                  <p className="control">
+                    <a className="button is-static">£</a>
+                  </p>
+                </p>
+                <p className="control">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="Enter the meal's price"
+                  />
+                </p>
+              </div>
+            </div>
+
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Location</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <div className="control">
+                    <textarea
+                      placeholder="Enter the meal's Description"
+                      className="textarea"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="field is-grouped is-grouped-multiline"
+              style={{ marginLeft: '140px' }}
+            >
+              {Object.keys(mockMenu[0])
+                .filter(
+                  field => field.startsWith('does') || field.startsWith('is')
+                )
+                .map((field, i) => {
+                  const splittedField = field.split('_').slice(1);
+                  if (field.startsWith('d')) {
+                    const [contain, allergen] = splittedField;
+                    field = `${capitalise(contain)}s ${allergen}`;
+                  } else {
+                    const [veg] = splittedField;
+                    field = capitalise(veg);
+                  }
+                  return (
+                    <div key={i} style={{ padding: '10px' }}>
+                      <input
+                        className="is-checkradio is-rtl is-circle"
+                        id="exampleRtlCheckbox"
+                        type="checkbox"
+                        name="exampleRtlCheckbox"
+                        checked={false}
+                      />
+                      <label className="label" htmlFor="exampleRtlCheckbox">
+                        {field}
+                      </label>
+                    </div>
+                  );
+                })}
+            </div>
+            <br />
+
+            <div className="field is-grouped is-grouped-right">
+              <p className="control">
+                {/* TODO: Make API call onClick */}
+                <button className="button is-success">
+                  <span className="icon is-small">
+                    <i className="fas fa-plus-circle"></i>
+                  </span>
+                  <span>Create</span>
+                </button>
+              </p>
+              <p className="control">
+                {/* TODO: Reset fields onClick */}
+                <a className="button is-light">Clear</a>
+              </p>
+            </div>
+          </div>
         </MainBox>
       </Router>
     );
