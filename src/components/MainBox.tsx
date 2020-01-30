@@ -7,6 +7,7 @@ const StyledBox = styled.div`
   width: 95%;
   margin-right: auto;
   height: calc(100vh - 120px);
+  overflow: auto;
 `;
 
 // This is just done to workaround a typing bug
