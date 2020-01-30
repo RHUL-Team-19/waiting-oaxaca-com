@@ -7,7 +7,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Restaurants from './pages/Restaurants';
 import Menu from './pages/Menu';
-
+import Staff from './pages/Staff';
 
 ReactDOM.render(
   <Router history={history}>
@@ -17,6 +17,7 @@ ReactDOM.render(
       <Route exact path="/home" component={Home} />
       <Route path="/restaurants" component={Restaurants} />
       <Route path="/menu" component={Menu} />
+      <Route path="/staff" component={Staff} />
     </Switch>
   </Router>,
   document.getElementById('root')

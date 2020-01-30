@@ -1,13 +1,11 @@
 export interface Staff {
   staff_id: number;
 
-  role: number;
-
   restaurant_id: number;
 
   full_name: string;
 
-  password_hash: string;
+  password: string;
 
   has_passed_training: boolean;
 }
