@@ -9,7 +9,7 @@ The UML Diagram created with draw.io can be viewed [here](https://www.draw.io/?l
 
 In the project directory, you can run:
 
-### `npm run start`
+### `npm start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
