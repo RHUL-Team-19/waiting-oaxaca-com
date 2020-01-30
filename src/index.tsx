@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Restaurants from './pages/Restaurants';
 import Menu from './pages/Menu';
 
+
 ReactDOM.render(
   <Router history={history}>
     <Redirect to="/login" />
