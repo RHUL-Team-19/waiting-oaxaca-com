@@ -29,7 +29,7 @@ export default class Login extends React.Component {
   };
 
   validate = () => {
-    RestClient.create<Inputs>('/authentication', this.state)
+    /* RestClient.create<Inputs>('/authentication', this.state)
       .then(res => {
         if (res.statusCode === 200) {history.push('/home')};
         <div class="notification is-warning">
@@ -37,7 +37,9 @@ export default class Login extends React.Component {
         </div>
         //Prompt that the creds were invalid (see https://bulma.io/documentation/elements/notification/)
       })
-      .catch(console.error);
+      .catch(console.error); */
+    if (this.state.user_id === '123' && this.state.password === 'foo')
+      history.push('/home');
   };
 
   render() {
