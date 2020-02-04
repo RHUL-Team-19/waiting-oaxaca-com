@@ -13,14 +13,12 @@ interface Inputs {
 }
 
 const LoginContainer = styled.div`
-  width: 520px;
-  height: 250px;
-  margin: auto;
-  margin-top: 240px;
+  width: 35vw;
+  height: 16.5vw;
 `;
 
 const LoginSubmitBtn = styled.div`
-  padding-top: 10px;
+  padding-top: 0.75vw;
 `;
 
 export default class Login extends React.Component {
@@ -43,10 +41,17 @@ export default class Login extends React.Component {
       history.push('/home');
   };
 
+  handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') this.validate();
+  };
+
   render() {
     return (
       <Router history={history}>
-        <div className="Login">
+        <div
+          className="Login columns is-desktop is-vcentered is-centered"
+          style={{ height: '100vh' }}
+        >
           {/* TODO: Add a logo here (see https://bulma.io/documentation/elements/image/) */}
           <LoginContainer className="box">
             <div className="field">
@@ -75,6 +80,7 @@ export default class Login extends React.Component {
                   onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
                     this.setState({ password: evt.target.value })
                   }
+                  onKeyPress={this.handleKeyPress}
                 />
                 <span className="icon is-small is-left">
                   <i className="fas fa-lock"></i>
