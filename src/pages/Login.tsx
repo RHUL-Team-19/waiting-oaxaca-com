@@ -17,14 +17,11 @@ const LoginContainer = styled.div`
   height: 16.5vw;
 `;
 
-const LoginSubmitBtn = styled.div`
-  padding-top: 0.75vw;
-`;
-
 export default class Login extends React.Component {
-  state: Inputs = {
+  state: Inputs & { invalidLogin: boolean } = {
     user_id: '',
-    password: ''
+    password: '',
+    invalidLogin: false
   };
 
   validate = () => {
@@ -34,11 +31,14 @@ export default class Login extends React.Component {
         <div class="notification is-warning">
           <button class="invalid information"></button>
         </div>
-        //Prompt that the creds were invalid (see https://bulma.io/documentation/elements/notification/)
       })
       .catch(console.error); */
-    if (this.state.user_id === '123' && this.state.password === 'foo')
+    if (this.state.user_id === '123' && this.state.password === 'foo') {
       history.push('/home');
+    } else {
+      this.setState({ invalidLogin: true });
+      setTimeout(() => this.setState({ invalidLogin: false }), 3000);
+    }
   };
 
   handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -53,7 +53,13 @@ export default class Login extends React.Component {
           style={{ height: '100vh' }}
         >
           {/* TODO: Add a logo here (see https://bulma.io/documentation/elements/image/) */}
-          <LoginContainer className="box">
+          <LoginContainer
+            className="box"
+            style={{
+              width: '35vw',
+              height: this.state.invalidLogin ? '17.5vw' : '16.5vw'
+            }}
+          >
             <div className="field">
               <label className="label">Staff ID</label>
               <div className="control  has-icons-left">
@@ -64,6 +70,7 @@ export default class Login extends React.Component {
                   onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
                     this.setState({ user_id: evt.target.value })
                   }
+                  onKeyPress={this.handleKeyPress}
                 />
                 <span className="icon is-small is-left">
                   <i className="fas fa-user"></i>
@@ -86,15 +93,43 @@ export default class Login extends React.Component {
                   <i className="fas fa-lock"></i>
                 </span>
               </p>
+              <p
+                className="help is-danger"
+                style={{
+                  display: this.state.invalidLogin ? 'block' : 'none',
+                  textAlign: 'center',
+                  paddingTop: '0.5vw'
+                }}
+              >
+                <i className="fas fa-exclamation-circle"></i>
+                <div
+                  style={{
+                    display: 'inline',
+                    fontSize: '0.9vw',
+                    paddingLeft: '0.25vw'
+                  }}
+                >
+                  Wrong password
+                </div>
+              </p>
             </div>
-            <LoginSubmitBtn className="control">
+            <div
+              className="control has-icons"
+              style={{ paddingTop: this.state.invalidLogin ? 0 : '0.75vw' }}
+            >
               <button
                 className="button is-link is-fullwidth"
                 onClick={this.validate}
               >
                 Login
+                <span
+                  className="icon is-small"
+                  style={{ paddingLeft: '1.5vw' }}
+                >
+                  <i className="fas fa-sign-in-alt"></i>
+                </span>
               </button>
-            </LoginSubmitBtn>
+            </div>
           </LoginContainer>
         </div>
       </Router>
