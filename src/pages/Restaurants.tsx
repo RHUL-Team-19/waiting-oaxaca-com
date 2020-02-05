@@ -7,47 +7,58 @@ import history from '../history';
 import { redirect } from '../util/Util';
 import { Restaurant } from '../models/Restaurant';
 
-const mockRestaurants: Restaurant[] = [
-  {
-    restaurant_id: 123,
-    name: 'oaxaca',
-    telephone_number: 123456789,
-    location: '123 Some Road\nLondon\nABC 123'
-  }
+const mockRestaurants: Restaurant[] = Array(9).fill({
+  restaurant_id: 123,
+  name: 'oaxaca',
+  telephone_number: 123456789,
+  location: '123 Some Road\nLondon\nABC 123'
+});
+
+const colours = [
+  'is-primary',
+  'is-link',
+  'is-info',
+  'is-success',
+  'is-warning',
+  'is-danger'
 ];
 
-// TODO: Redesign this
 const renderAll = () => (
-  <table className="table is-fullwidth" style={{ marginLeft: '280px' }}>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-      </tr>
-    </thead>
-
-    {mockRestaurants.map(({ restaurant_id, name }) => {
+  <div
+    className="columns is-multiline is-vcentered"
+    style={{
+      textAlign: 'center',
+      justifyContent: 'center',
+      padding: '2vw',
+      position: 'relative',
+      top: '50%',
+      transform: 'translateY(-50%)'
+    }}
+  >
+    {mockRestaurants.map(({ restaurant_id, name }, i) => {
       return (
-        <tbody key={restaurant_id}>
-          <tr>
-            <th>{restaurant_id}</th>
-            <td>{name}</td>
-            <td>
-              <button
-                className="button is-warning is-small"
-                onClick={() => redirect(`restaurants/find/${restaurant_id}`)}
-              >
-                <span className="icon is-small">
-                  <i className="fas fa-edit"></i>
-                </span>
-                <span>Edit</span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
+        <div className="column is-one-fifth" key={i} style={{ padding: '1vw' }}>
+          <article
+            className={`tile is-child notification ${
+              colours[i % colours.length]
+            }`}
+          >
+            <p className="title">{restaurant_id}</p>
+            <p className="subtitle">{name}</p>
+            <button
+              className="button is-warning is-small"
+              onClick={() => redirect(`restaurants/find/${restaurant_id}`)}
+            >
+              <span className="icon is-small">
+                <i className="fas fa-edit"></i>
+              </span>
+              <span>Edit</span>
+            </button>
+          </article>
+        </div>
       );
     })}
-  </table>
+  </div>
 );
 
 const renderSingle = (props: {
@@ -176,6 +187,11 @@ const renderSingle = (props: {
 export default class Restaurants extends Module {
   state = { restaurant_id: 'all' };
 
+  handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter')
+      redirect(`restaurants/find/${this.state.restaurant_id}`);
+  };
+
   constructor(props: { match: { path: string } }) {
     super(props);
   }
@@ -212,6 +228,7 @@ export default class Restaurants extends Module {
                   onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
                     this.setState({ restaurant_id: evt.target.value })
                   }
+                  onKeyPress={this.handleKeyPress}
                 />
               </div>
               <div className="control">
@@ -255,7 +272,9 @@ export default class Restaurants extends Module {
             className="container"
             style={{
               width: 'calc(100vh - 120px)',
-              top: 'calc(100vh - 610px)'
+              position: 'relative',
+              top: '50%',
+              transform: 'translateY(-50%)'
             }}
           >
             <div className="field is-horizontal">
