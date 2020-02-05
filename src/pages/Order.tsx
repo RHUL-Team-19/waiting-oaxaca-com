@@ -30,19 +30,17 @@ const renderAll = () => (
           <th>Staff ID</th>
           <th>table ID</th>
           <th>Time orderded</th>
-          <th>Has been paid</th>
         </tr>
       </thead>
   
-      {mockOrder.map(({ order_id, staff_id, table_id, date_time_ordered, is_paid }) => {
+      {mockOrder.map(({ order_id, staff_id, table_id, date_time_ordered }) => {
         return (
           <tbody key={staff_id}>
             <tr>
               <th>{order_id}</th>
               <th>{staff_id}</th>
               <th>{table_id}</th>
-              <th>{date_time_ordered}</th>
-              <td>{is_paid}</td>
+              <td>{date_time_ordered}</td>
               <td>
                 <button
                   className="button is-warning is-small"
@@ -327,41 +325,7 @@ const renderAll = () => (
                   </div>
                 </div>
               </div>
-  
-              <div className="field is-horizontal">
-                <div className="field-label is-normal">
-                  <label className="label">Time created</label>
-                </div>
-                <div className="field-body">
-                  <div className="field">
-                    <p className="control">
-                      <input
-                        placeholder="Enter time order placed"
-                        className="input"
-                        type="text"
-                      />
-                    </p>
-                  </div>
-                </div>
-              </div>
 
-              <div className="field is-horizontal">
-                <div className="field-label is-normal">
-                  <label className="label">Paid</label>
-                </div>
-                <div className="field-body">
-                  <div className="field">
-                    <input
-                      id="switchColorDefault"
-                      type="checkbox"
-                      name="switchColorDefault"
-                      className="switch"
-                      checked={false}
-                    />
-                    <label htmlFor="switchColorDefault"></label>
-                  </div>
-                </div>
-              </div>
   
               <div className="field is-grouped is-grouped-right">
                 <p className="control">
