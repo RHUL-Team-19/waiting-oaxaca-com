@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Restaurants from './pages/Restaurants';
 import Menu from './pages/Menu';
 import Staff from './pages/Staff';
+import Order from './pages/Order';
 
 ReactDOM.render(
   <Router history={history}>
@@ -18,6 +19,7 @@ ReactDOM.render(
       <Route path="/restaurants" component={Restaurants} />
       <Route path="/menu" component={Menu} />
       <Route path="/staff" component={Staff} />
+      <Route path="/order" component={Order}/>
     </Switch>
   </Router>,
   document.getElementById('root')
