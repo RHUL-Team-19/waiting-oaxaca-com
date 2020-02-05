@@ -12,7 +12,7 @@ const mockOrder: OrderModel[] = [
     {
       order_id: 456,
       staff_id: 123,
-      is_paid: true,
+      is_paid: false,
       table_id: 1,
       date_time_ordered: "saturday",
       satisfaction_rating: 5,
@@ -23,26 +23,30 @@ const mockOrder: OrderModel[] = [
 
 // TODO: Redesign this
 const renderAll = () => (
-    <table className="table is-fullwidth" style={{ marginLeft: '140px' }}>
+    <table className="table is-fullwidth" style={{ marginLeft: '100px' }}>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Restaurant ID</th>
-          <th>Name</th>
+          <th>Order ID</th>
+          <th>Staff ID</th>
+          <th>table ID</th>
+          <th>Time orderded</th>
+          <th>Has been paid</th>
         </tr>
       </thead>
   
-      {mockOrder.map(({ staff_id, order_id, is_paid }) => {
+      {mockOrder.map(({ order_id, staff_id, table_id, date_time_ordered, is_paid }) => {
         return (
           <tbody key={staff_id}>
             <tr>
-              <th>{staff_id}</th>
               <th>{order_id}</th>
+              <th>{staff_id}</th>
+              <th>{table_id}</th>
+              <th>{date_time_ordered}</th>
               <td>{is_paid}</td>
               <td>
                 <button
                   className="button is-warning is-small"
-                  onClick={() => redirect(`staff/find/${staff_id}`)} //TODO change redirect
+                  onClick={() => redirect(`order/find/${order_id}`)} //TODO change redirect
                 >
                   <span className="icon is-small">
                     <i className="fas fa-edit"></i>
@@ -60,7 +64,7 @@ const renderAll = () => (
     match: { params: { order_id: number | string } };
   }) => {
     if (props.match.params.order_id === 'all') return renderAll();
-    // TODO: Replace with API get to /staff/:id
+    // TODO: Replace with API get to /order/:id
     const order = mockOrder.find(
       ({ order_id }) => order_id === Number(props.match.params.order_id)
     );
@@ -74,24 +78,6 @@ const renderAll = () => (
             top: 'calc(100vh - 610px)'
           }}
         >
-          <div className="field is-horizontal">
-            <div className="field-label is-normal">
-              <label className="label">ID</label>
-            </div>
-            <div className="field-body">
-              <div className="field">
-                <p className="control">
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder={props.match.params.order_id.toString()}
-                    disabled
-                  />
-                </p>
-              </div>
-            </div>
-          </div>
-  
           <div className="field is-horizontal">
             <div className="field-label is-normal">
               <label className="label">Order ID</label>
@@ -111,14 +97,47 @@ const renderAll = () => (
   
           <div className="field is-horizontal">
             <div className="field-label is-normal">
-              <label className="label"></label>
+              <label className="label">Staff ID</label>
             </div>
             <div className="field-body">
               <div className="field">
                 <p className="control">
                   <input
-                   // defaultValue={order?. "false"}
-                    defaultValue={"false"}
+                    defaultValue={order?.staff_id}
+                    className="input"
+                    type="text"
+                  />
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="field is-horizontal">
+            <div className="field-label is-normal">
+              <label className="label">Table ID</label>
+            </div>
+            <div className="field-body">
+              <div className="field">
+                <p className="control">
+                  <input
+                    defaultValue={order?.table_id}
+                    className="input"
+                    type="text"
+                  />
+                </p>
+              </div>
+            </div>
+          </div>
+  
+          <div className="field is-horizontal">
+            <div className="field-label is-normal">
+              <label className="label">Time Ordered</label>
+            </div>
+            <div className="field-body">
+              <div className="field">
+                <p className="control">
+                  <input
+                    defaultValue={order?.date_time_ordered}
                     className="input"
                     type="text"
                   />
@@ -256,6 +275,25 @@ const renderAll = () => (
                 top: 'calc(100vh - 610px)'
               }}
             >
+
+            <div className="field is-horizontal">
+                <div className="field-label is-normal">
+                  <label className="label">Staff ID</label>
+                </div>
+                <div className="field-body">
+                  <div className="field">
+                    <p className="control">
+                      <input
+                        placeholder="123"
+                        disabled
+                        className="input"
+                        type="text"
+                      />
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <div className="field is-horizontal">
                 <div className="field-label is-normal">
                   <label className="label">Order ID</label>
@@ -290,6 +328,23 @@ const renderAll = () => (
                 </div>
               </div>
   
+              <div className="field is-horizontal">
+                <div className="field-label is-normal">
+                  <label className="label">Time created</label>
+                </div>
+                <div className="field-body">
+                  <div className="field">
+                    <p className="control">
+                      <input
+                        placeholder="Enter time order placed"
+                        className="input"
+                        type="text"
+                      />
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <div className="field is-horizontal">
                 <div className="field-label is-normal">
                   <label className="label">Paid</label>
