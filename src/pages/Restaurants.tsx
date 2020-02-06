@@ -17,18 +17,30 @@ const colours = [
   'is-warning',
   'is-danger'
 ];
-const nameInput = React.createRef<HTMLInputElement>();
-const telephoneInput = React.createRef<HTMLInputElement>();
-const locationInput = React.createRef<HTMLTextAreaElement>();
+const nameRef = React.createRef<HTMLInputElement>();
+const telephoneRef = React.createRef<HTMLInputElement>();
+const locationRef = React.createRef<HTMLTextAreaElement>();
 
 let cachedRestaurants: Restaurant[] | null = null;
 
+// TODO: Handle responses returned from the API.
+
 const createRestaurant = () =>
   RestClient.create<Restaurant>('/restaurants/', {
-    name: nameInput.current?.value,
-    location: locationInput.current?.value,
-    telephone_number: telephoneInput.current?.value
+    name: nameRef.current?.value,
+    location: locationRef.current?.value,
+    telephone_number: telephoneRef.current?.value
   });
+
+const updateRestaurant = (id: number) =>
+  RestClient.update<Restaurant>(`/restaurants/${id}/`, {
+    name: nameRef.current?.value,
+    location: locationRef.current?.value,
+    telephone_number: telephoneRef.current?.value
+  });
+
+const deleteRestaurant = (id: number) =>
+  RestClient.del<Restaurant>(`/restaurants/${id}/`);
 
 const renderAll = () => (
   <div
@@ -69,10 +81,10 @@ const renderAll = () => (
 );
 
 const renderSingle = (props: {
-  match: { params: { restaurant_id: number | string } };
+  match: { params: { restaurant_id: string } };
 }) => {
-  const id = props.match.params.restaurant_id;
-  if (id === 'all') return renderAll();
+  const id = Number(props.match.params.restaurant_id);
+  if (!id) return renderAll();
   const restaurant = cachedRestaurants?.find(
     ({ restaurant_id }) => restaurant_id === Number(id)
   );
@@ -116,6 +128,7 @@ const renderSingle = (props: {
                   defaultValue={restaurant?.name}
                   className="input"
                   type="text"
+                  ref={nameRef}
                 />
               </p>
             </div>
@@ -138,6 +151,7 @@ const renderSingle = (props: {
                     className="input"
                     type="tel"
                     placeholder="Restaurant phone number"
+                    ref={telephoneRef}
                   />
                 </p>
               </div>
@@ -156,6 +170,7 @@ const renderSingle = (props: {
                 <textarea
                   defaultValue={restaurant?.location}
                   className="textarea"
+                  ref={locationRef}
                 ></textarea>
               </div>
             </div>
@@ -164,8 +179,10 @@ const renderSingle = (props: {
 
         <div className="field is-grouped is-grouped-right">
           <p className="control">
-            {/* TODO: Make API call onClick */}
-            <button className="button is-success">
+            <button
+              className="button is-success"
+              onClick={() => updateRestaurant(id)}
+            >
               <span className="icon is-small">
                 <i className="fas fa-check"></i>
               </span>
@@ -173,8 +190,10 @@ const renderSingle = (props: {
             </button>
           </p>
           <p className="control">
-            {/* TODO: Make API call onClick */}
-            <button className="button is-danger">
+            <button
+              className="button is-danger"
+              onClick={() => deleteRestaurant(id)}
+            >
               <span>Delete</span>
               <span className="icon is-small">
                 <i className="fas fa-times"></i>
@@ -193,7 +212,7 @@ const renderSingle = (props: {
 
 export default class Restaurants extends Module {
   state = {
-    restaurant_id: 'all',
+    restaurant_id: 0,
     restaurants: null as Restaurant[] | null
   };
 
@@ -343,7 +362,7 @@ export default class Restaurants extends Module {
                       placeholder="Enter the restaurant's name"
                       className="input"
                       type="text"
-                      ref={nameInput}
+                      ref={nameRef}
                     />
                   </p>
                 </div>
@@ -365,7 +384,7 @@ export default class Restaurants extends Module {
                         className="input"
                         type="tel"
                         placeholder="Enter the restaurant's phone number"
-                        ref={telephoneInput}
+                        ref={telephoneRef}
                       />
                     </p>
                   </div>
@@ -384,7 +403,7 @@ export default class Restaurants extends Module {
                     <textarea
                       placeholder="Enter the restaurant's location"
                       className="textarea"
-                      ref={locationInput}
+                      ref={locationRef}
                     ></textarea>
                   </div>
                 </div>
