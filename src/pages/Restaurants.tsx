@@ -6,13 +6,10 @@ import MainBox from '../components/MainBox';
 import history from '../history';
 import { redirect } from '../util/Util';
 import { Restaurant } from '../models/Restaurant';
+import RestClient from '../RestClient';
+import ErrorMessage from '../components/ErrorMessage';
 
-const mockRestaurants: Restaurant[] = Array(9).fill({
-  restaurant_id: 123,
-  name: 'oaxaca',
-  telephone_number: 123456789,
-  location: '123 Some Road\nLondon\nABC 123'
-});
+let cachedRestaurants: Restaurant[] | null = null;
 
 const colours = [
   'is-primary',
@@ -35,7 +32,7 @@ const renderAll = () => (
       transform: 'translateY(-50%)'
     }}
   >
-    {mockRestaurants.map(({ restaurant_id, name }, i) => {
+    {cachedRestaurants?.map(({ restaurant_id, name }, i) => {
       return (
         <div className="column is-one-fifth" key={i} style={{ padding: '1vw' }}>
           <article
@@ -64,13 +61,13 @@ const renderAll = () => (
 const renderSingle = (props: {
   match: { params: { restaurant_id: number | string } };
 }) => {
-  if (props.match.params.restaurant_id === 'all') return renderAll();
-  // TODO: Replace with API get to /restaurants/:id
-  const restaurant = mockRestaurants.find(
-    ({ restaurant_id }) =>
-      restaurant_id === Number(props.match.params.restaurant_id)
+  const id = props.match.params.restaurant_id;
+  if (id === 'all') return renderAll();
+  const restaurant = cachedRestaurants?.find(
+    ({ restaurant_id }) => restaurant_id === Number(id)
   );
-  // TODO: Handle invalid ids
+  if (!restaurant)
+    return <ErrorMessage action={`find a restaurant with the ID of ${id}`} />;
   return (
     <Router history={history}>
       <div
@@ -185,7 +182,51 @@ const renderSingle = (props: {
 };
 
 export default class Restaurants extends Module {
-  state = { restaurant_id: 'all' };
+  state = {
+    restaurant_id: 'all',
+    restaurants: null as Restaurant[] | null
+  };
+
+  fetchRestaurants = () => {
+    const {
+      state: { restaurants }
+    } = this;
+    if (!restaurants || !restaurants.length) {
+      RestClient.get<Restaurant[]>('/restaurants/')
+        .then(({ result }) => {
+          result = result || [];
+          cachedRestaurants = result;
+          this.setState({ restaurants: result });
+        })
+        .catch(err => {
+          console.error(err);
+          cachedRestaurants = [];
+          this.setState({ restaurants: [] });
+        });
+    }
+    return this.state.restaurants;
+  };
+
+  renderLoadError() {
+    const restaurants = this.fetchRestaurants();
+    if (!restaurants) {
+      return (
+        <div className="pageloader is-active">
+          <span className="title">Loading</span>
+        </div>
+      );
+    }
+    if (!restaurants.length) {
+      return (
+        <Router history={history}>
+          <MainBox>
+            <ErrorMessage action="fetch the restaurants" />
+          </MainBox>
+        </Router>
+      );
+    }
+    return null;
+  }
 
   handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter')
@@ -198,6 +239,8 @@ export default class Restaurants extends Module {
 
   find = () => {
     if (this.props.location.pathname.split('/').length === 4) {
+      const loadingOrError = this.renderLoadError();
+      if (loadingOrError) return loadingOrError;
       return (
         <MainBox>
           <Route
@@ -256,13 +299,15 @@ export default class Restaurants extends Module {
     );
   };
 
-  view() {
+  view = () => {
+    const loadingOrError = this.renderLoadError();
+    if (loadingOrError) return loadingOrError;
     return (
       <Router history={history}>
         <MainBox>{renderAll()}</MainBox>
       </Router>
     );
-  }
+  };
 
   create() {
     return (
