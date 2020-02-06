@@ -9,8 +9,6 @@ import { Restaurant } from '../models/Restaurant';
 import RestClient from '../RestClient';
 import ErrorMessage from '../components/ErrorMessage';
 
-let cachedRestaurants: Restaurant[] | null = null;
-
 const colours = [
   'is-primary',
   'is-link',
@@ -19,6 +17,18 @@ const colours = [
   'is-warning',
   'is-danger'
 ];
+const nameInput = React.createRef<HTMLInputElement>();
+const telephoneInput = React.createRef<HTMLInputElement>();
+const locationInput = React.createRef<HTMLTextAreaElement>();
+
+let cachedRestaurants: Restaurant[] | null = null;
+
+const createRestaurant = () =>
+  RestClient.create<Restaurant>('/restaurants/', {
+    name: nameInput.current?.value,
+    location: locationInput.current?.value,
+    telephone_number: telephoneInput.current?.value
+  });
 
 const renderAll = () => (
   <div
@@ -333,6 +343,7 @@ export default class Restaurants extends Module {
                       placeholder="Enter the restaurant's name"
                       className="input"
                       type="text"
+                      ref={nameInput}
                     />
                   </p>
                 </div>
@@ -354,6 +365,7 @@ export default class Restaurants extends Module {
                         className="input"
                         type="tel"
                         placeholder="Enter the restaurant's phone number"
+                        ref={telephoneInput}
                       />
                     </p>
                   </div>
@@ -372,6 +384,7 @@ export default class Restaurants extends Module {
                     <textarea
                       placeholder="Enter the restaurant's location"
                       className="textarea"
+                      ref={locationInput}
                     ></textarea>
                   </div>
                 </div>
@@ -380,8 +393,10 @@ export default class Restaurants extends Module {
 
             <div className="field is-grouped is-grouped-right">
               <p className="control">
-                {/* TODO: Make API call onClick */}
-                <button className="button is-success">
+                <button
+                  className="button is-success"
+                  onClick={createRestaurant}
+                >
                   <span className="icon is-small">
                     <i className="fas fa-plus-circle"></i>
                   </span>
