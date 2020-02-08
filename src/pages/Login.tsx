@@ -77,6 +77,7 @@ export default class Login extends React.Component {
                 </span>
               </div>
             </div>
+            
             <div className="field">
               <label className="label">Password</label>
               <p className="control  has-icons-left">
@@ -109,7 +110,7 @@ export default class Login extends React.Component {
                     paddingLeft: '0.25vw'
                   }}
                 >
-                  Wrong password
+                  Wrong ID or password
                 </div>
               </p>
             </div>

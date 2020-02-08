@@ -29,20 +29,32 @@ const mockMenu: Meal[] = [
 ];
 
 const renderAll = () => (
-  <table className="table is-fullwidth" style={{ marginLeft: '280px' }}>
+  <table className="table is-fullwidth" style={{ marginLeft: '80px', marginRight: '280px'}}>
     <thead>
       <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Allergies</th>
+
       </tr>
     </thead>
 
-    {mockMenu.map(({ meal_id, name }) => {
+    {mockMenu.map(({ meal_id, name, price, description, is_vegan}) => {
+      var is_vegan_str: string = String(is_vegan)
+      var titleConentent = "Is_vegan:  " + is_vegan_str;
       return (
         <tbody key={meal_id}>
           <tr>
             <th>{meal_id}</th>
             <td>{name}</td>
+            <td>{price}</td>
+            <td>{description}</td>
+            <td>
+              <a href = "" title = {titleConentent}> Allergies</a>
+            </td>
+
             <td>
               <button
                 className="button is-warning is-small"

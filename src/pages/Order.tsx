@@ -322,6 +322,19 @@ export default class Order extends Module {
               </div>
             </div>
 
+            <div className="field has-addons">
+                <p className="control">
+                 <button className="button is-link"
+                   onClick={() => redirect('order/find/all')} //TODO redirect to menu
+                 >
+                  <span className="icon is-small">
+                     <i className="fas fa-plus-circle"></i>
+                    </span>
+                    <span>Add Meal</span>
+                  </button>
+                </p>
+              </div>
+
             <div className="field is-grouped is-grouped-right">
               <p className="control">
                 {/* TODO: Make API call onClick */}
