@@ -36,7 +36,6 @@ const renderAll = () => (
         <th>Name</th>
         <th>Price</th>
         <th>Description</th>
-        <th>Allergies</th>
 
       </tr>
     </thead>
@@ -50,9 +49,8 @@ const renderAll = () => (
             <th>{meal_id}</th>
             <td>{name}</td>
             <td>{price}</td>
-            <td>{description}</td>
             <td>
-              <a href = "" title = {titleConentent}> Allergies</a>
+              <a href = "" title = {titleConentent}>{description}</a>
             </td>
 
             <td>
