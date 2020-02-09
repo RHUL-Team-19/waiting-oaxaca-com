@@ -40,9 +40,23 @@ const renderAll = () => (
       </tr>
     </thead>
 
-    {mockMenu.map(({ meal_id, name, price, description, is_vegan}) => {
+    {mockMenu.map(({ meal_id, name, price, description, is_vegan, is_vegetarian, does_contain_egg, 
+    does_contain_soy, does_contain_fish, does_contain_lactose, does_contain_wheat, does_contain_nuts, does_contain_gluten, does_contain_dairy}) => {
       var is_vegan_str: string = String(is_vegan)
-      var titleConentent = "Is_vegan:  " + is_vegan_str;
+      var is_vegetarian_str: string = String(is_vegetarian)
+      var does_contain_egg_str: string = String(does_contain_egg)
+      var does_contain_soy_str: string = String(does_contain_soy)
+      var does_contain_fish_str: string = String(does_contain_fish)
+      var does_contain_lactose_str: string = String(does_contain_lactose)
+      var does_contain_wheat_str: string = String(does_contain_wheat)
+      var does_contain_nuts_str: string = String(does_contain_nuts)
+      var does_contain_gluten_str: string = String(does_contain_gluten)
+      var does_contain_dairy_str: string = String(does_contain_dairy)
+
+      var titleConentent = "Is vegan: " + is_vegan_str + "\nIs vegetarian: " + is_vegetarian_str + "\nContains eggs?: " + does_contain_egg_str +
+      "\nContains soy?: " + does_contain_soy_str + "\nContains fish?: " + does_contain_fish_str + "\n Contains lactose?: " + does_contain_lactose_str
+      + "\nContains wheat?: " + does_contain_wheat_str + "\nContains nuts?: " + does_contain_nuts_str + "\nContains gluten?: " + does_contain_gluten_str +
+      "\nContains dairy?: " + does_contain_dairy_str;
       return (
         <tbody key={meal_id}>
           <tr>
