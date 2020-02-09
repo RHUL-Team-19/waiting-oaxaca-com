@@ -53,10 +53,10 @@ const renderAll = () => (
       var does_contain_gluten_str: string = String(does_contain_gluten)
       var does_contain_dairy_str: string = String(does_contain_dairy)
 
-      var titleConentent = "Is vegan: " + is_vegan_str + "\nIs vegetarian: " + is_vegetarian_str + "\nContains eggs?: " + does_contain_egg_str +
-      "\nContains soy?: " + does_contain_soy_str + "\nContains fish?: " + does_contain_fish_str + "\n Contains lactose?: " + does_contain_lactose_str
-      + "\nContains wheat?: " + does_contain_wheat_str + "\nContains nuts?: " + does_contain_nuts_str + "\nContains gluten?: " + does_contain_gluten_str +
-      "\nContains dairy?: " + does_contain_dairy_str;
+      var titleConentent = "Is vegan: " + is_vegan_str + "\nIs vegetarian: " + is_vegetarian_str + "\nContains eggs? " + does_contain_egg_str +
+      "\nContains soy? " + does_contain_soy_str + "\nContains fish? " + does_contain_fish_str + "\n Contains lactose? " + does_contain_lactose_str
+      + "\nContains wheat? " + does_contain_wheat_str + "\nContains nuts? " + does_contain_nuts_str + "\nContains gluten? " + does_contain_gluten_str +
+      "\nContains dairy? " + does_contain_dairy_str;
       return (
         <tbody key={meal_id}>
           <tr>
