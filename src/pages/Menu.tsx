@@ -6,6 +6,7 @@ import { Route, Router } from 'react-router-dom';
 import { redirect, capitalise } from '../util/Util';
 import history from '../history';
 import { Meal } from '../models/Meal';
+import RestCLient from '../RestClient';
 
 const mockMenu: Meal[] = [
   {
@@ -246,7 +247,7 @@ const renderSingle = (props: {
 };
 
 export default class Menu extends Module {
-  state = { meal_id: 'all' };
+  state = { meal_id: 'all'};
 
   find = () => {
     if (this.props.location.pathname.split('/').length === 4) {
@@ -318,31 +319,61 @@ export default class Menu extends Module {
             className="container"
             style={{
               width: 'calc(100vh - 120px)',
-              top: 'calc(100vh - 720px)'
+              top: 'calc(100vh - 600px)'
             }}
           >
-            <div className="field is-horizontal">
-              <div className="field-label is-normal">
-                <label className="label">Name</label>
-              </div>
-              <div className="field-body">
-                <div className="field">
-                  <p className="control">
-                    <input
-                      placeholder="Enter the meal's name"
-                      className="input"
-                      type="text"
-                    />
-                  </p>
+            
+            <div className="card-image">
+              <figure className="image is-150x120">
+                <img src={'https://objects.wsantos.net/oaxaca-com/menu/images/tacos.jpg'} alt="Placeholder image" />
+              </figure>
+            </div>
+            <div className="card-content">
+              <div className="media">
+                <div className="field is-horizontal">
+                  <div className="field-label is-normal">
+                    <label className="label">ID</label>
+                  </div>
+                  <div className="field-body">
+                    <div className="field">
+                      <p className="control">
+                        <input
+                          className="input"
+                          type="text"
+                          placeholder= "2"
+                         // placeholder={Meal?.meal_id.toString()}
+                          style={{ width: '40px' }}
+                        />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="field is-horizontal">
+                  <div className="field-label is-normal">
+                    <label className="label" style={{ marginLeft: '25px' }}>
+                      Name
+                    </label>
+                  </div>
+                  <div className="field-body">
+                    <div className="field">
+                      <p className="control">
+                        <input
+                          //defaultValue={Meal?.name}
+                          defaultValue= "Taco"
+                          className="input"
+                          type="text"
+                        />
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="field has-addons is-horizontal">
-              <div className="field-label is-normal">
-                <label className="label">Price</label>
-              </div>
-              <div className="field-body">
+              <div className="field has-addons is-horizontal">
+                <div className="field-label is-normal">
+                  <label className="label">Price</label>
+                </div>
                 <p className="control">
                   <p className="control">
                     <a className="button is-static">£</a>
@@ -352,23 +383,28 @@ export default class Menu extends Module {
                   <input
                     className="input"
                     type="text"
-                    placeholder="Enter the meal's price"
+                    //defaultValue={Meal?.price.toFixed(2)}
+                    defaultValue="0.50"
                   />
                 </p>
               </div>
-            </div>
+              <br />
 
-            <div className="field is-horizontal">
-              <div className="field-label is-normal">
-                <label className="label">Location</label>
-              </div>
-              <div className="field-body">
-                <div className="field">
-                  <div className="control">
-                    <textarea
-                      placeholder="Enter the meal's Description"
-                      className="textarea"
-                    ></textarea>
+              <div className="content">
+                <div className="field is-horizontal">
+                  <div className="field-label is-normal">
+                    <label className="label">Description</label>
+                  </div>
+                  <div className="field-body">
+                    <div className="field">
+                      <div className="control">
+                        <textarea
+                          //defaultValue={Meal?.description}
+                          defaultValue = "food"
+                          className="textarea"
+                        ></textarea>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
