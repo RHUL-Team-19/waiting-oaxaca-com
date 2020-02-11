@@ -6,60 +6,90 @@ import MainBox from '../components/MainBox';
 import history from '../history';
 import { redirect } from '../util/Util';
 import { Restaurant } from '../models/Restaurant';
+import RestClient from '../RestClient';
+import ErrorMessage from '../components/ErrorMessage';
 
-const mockRestaurants: Restaurant[] = [
-  {
-    restaurant_id: 123,
-    name: 'oaxaca',
-    telephone_number: 123456789,
-    location: '123 Some Road\nLondon\nABC 123'
-  }
+const colours = [
+  'is-primary',
+  'is-link',
+  'is-info',
+  'is-success',
+  'is-warning',
+  'is-danger'
 ];
+const nameRef = React.createRef<HTMLInputElement>();
+const telephoneRef = React.createRef<HTMLInputElement>();
+const locationRef = React.createRef<HTMLTextAreaElement>();
 
-// TODO: Redesign this
+let cachedRestaurants: Restaurant[] | null = null;
+
+// TODO: Handle responses returned from the API.
+
+const createRestaurant = () =>
+  RestClient.create<Restaurant>('/restaurants/', {
+    name: nameRef.current?.value,
+    location: locationRef.current?.value,
+    telephone_number: telephoneRef.current?.value
+  });
+
+const updateRestaurant = (id: number) =>
+  RestClient.update<Restaurant>(`/restaurants/${id}/`, {
+    name: nameRef.current?.value,
+    location: locationRef.current?.value,
+    telephone_number: telephoneRef.current?.value
+  });
+
+const deleteRestaurant = (id: number) =>
+  RestClient.del<Restaurant>(`/restaurants/${id}/`);
+
 const renderAll = () => (
-  <table className="table is-fullwidth" style={{ marginLeft: '280px' }}>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-      </tr>
-    </thead>
-
-    {mockRestaurants.map(({ restaurant_id, name }) => {
+  <div
+    className="columns is-multiline is-vcentered"
+    style={{
+      textAlign: 'center',
+      justifyContent: 'center',
+      padding: '2vw',
+      position: 'relative',
+      top: '50%',
+      transform: 'translateY(-50%)'
+    }}
+  >
+    {cachedRestaurants?.map(({ restaurant_id, name }, i) => {
       return (
-        <tbody key={restaurant_id}>
-          <tr>
-            <th>{restaurant_id}</th>
-            <td>{name}</td>
-            <td>
-              <button
-                className="button is-warning is-small"
-                onClick={() => redirect(`restaurants/find/${restaurant_id}`)}
-              >
-                <span className="icon is-small">
-                  <i className="fas fa-edit"></i>
-                </span>
-                <span>Edit</span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
+        <div className="column is-one-fifth" key={i} style={{ padding: '1vw' }}>
+          <article
+            className={`tile is-child notification ${
+              colours[i % colours.length]
+            }`}
+          >
+            <p className="title">{restaurant_id}</p>
+            <p className="subtitle">{name}</p>
+            <button
+              className="button is-warning is-small"
+              onClick={() => redirect(`restaurants/find/${restaurant_id}`)}
+            >
+              <span className="icon is-small">
+                <i className="fas fa-edit"></i>
+              </span>
+              <span>Edit</span>
+            </button>
+          </article>
+        </div>
       );
     })}
-  </table>
+  </div>
 );
 
 const renderSingle = (props: {
-  match: { params: { restaurant_id: number | string } };
+  match: { params: { restaurant_id: string } };
 }) => {
-  if (props.match.params.restaurant_id === 'all') return renderAll();
-  // TODO: Replace with API get to /restaurants/:id
-  const restaurant = mockRestaurants.find(
-    ({ restaurant_id }) =>
-      restaurant_id === Number(props.match.params.restaurant_id)
+  const id = Number(props.match.params.restaurant_id);
+  if (!id) return renderAll();
+  const restaurant = cachedRestaurants?.find(
+    ({ restaurant_id }) => restaurant_id === Number(id)
   );
-  // TODO: Handle invalid ids
+  if (!restaurant)
+    return <ErrorMessage action={`find a restaurant with the ID of ${id}`} />;
   return (
     <Router history={history}>
       <div
@@ -98,6 +128,7 @@ const renderSingle = (props: {
                   defaultValue={restaurant?.name}
                   className="input"
                   type="text"
+                  ref={nameRef}
                 />
               </p>
             </div>
@@ -120,6 +151,7 @@ const renderSingle = (props: {
                     className="input"
                     type="tel"
                     placeholder="Restaurant phone number"
+                    ref={telephoneRef}
                   />
                 </p>
               </div>
@@ -138,6 +170,7 @@ const renderSingle = (props: {
                 <textarea
                   defaultValue={restaurant?.location}
                   className="textarea"
+                  ref={locationRef}
                 ></textarea>
               </div>
             </div>
@@ -146,8 +179,10 @@ const renderSingle = (props: {
 
         <div className="field is-grouped is-grouped-right">
           <p className="control">
-            {/* TODO: Make API call onClick */}
-            <button className="button is-success">
+            <button
+              className="button is-success"
+              onClick={() => updateRestaurant(id)}
+            >
               <span className="icon is-small">
                 <i className="fas fa-check"></i>
               </span>
@@ -155,8 +190,10 @@ const renderSingle = (props: {
             </button>
           </p>
           <p className="control">
-            {/* TODO: Make API call onClick */}
-            <button className="button is-danger">
+            <button
+              className="button is-danger"
+              onClick={() => deleteRestaurant(id)}
+            >
               <span>Delete</span>
               <span className="icon is-small">
                 <i className="fas fa-times"></i>
@@ -174,7 +211,56 @@ const renderSingle = (props: {
 };
 
 export default class Restaurants extends Module {
-  state = { restaurant_id: 'all' };
+  state = {
+    restaurant_id: 0,
+    restaurants: null as Restaurant[] | null
+  };
+
+  fetchRestaurants = () => {
+    const {
+      state: { restaurants }
+    } = this;
+    if (!restaurants || !restaurants.length) {
+      RestClient.get<Restaurant[]>('/restaurants/')
+        .then(({ result }) => {
+          result = result || [];
+          cachedRestaurants = result;
+          this.setState({ restaurants: result });
+        })
+        .catch(err => {
+          console.error(err);
+          cachedRestaurants = [];
+          this.setState({ restaurants: [] });
+        });
+    }
+    return this.state.restaurants;
+  };
+
+  renderLoadError() {
+    const restaurants = this.fetchRestaurants();
+    if (!restaurants) {
+      return (
+        <div className="pageloader is-active">
+          <span className="title">Loading</span>
+        </div>
+      );
+    }
+    if (!restaurants.length) {
+      return (
+        <Router history={history}>
+          <MainBox>
+            <ErrorMessage action="fetch the restaurants" />
+          </MainBox>
+        </Router>
+      );
+    }
+    return null;
+  }
+
+  handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter')
+      redirect(`restaurants/find/${this.state.restaurant_id}`);
+  };
 
   constructor(props: { match: { path: string } }) {
     super(props);
@@ -182,6 +268,8 @@ export default class Restaurants extends Module {
 
   find = () => {
     if (this.props.location.pathname.split('/').length === 4) {
+      const loadingOrError = this.renderLoadError();
+      if (loadingOrError) return loadingOrError;
       return (
         <MainBox>
           <Route
@@ -212,6 +300,7 @@ export default class Restaurants extends Module {
                   onChange={(evt: React.ChangeEvent<HTMLInputElement>) =>
                     this.setState({ restaurant_id: evt.target.value })
                   }
+                  onKeyPress={this.handleKeyPress}
                 />
               </div>
               <div className="control">
@@ -239,13 +328,15 @@ export default class Restaurants extends Module {
     );
   };
 
-  view() {
+  view = () => {
+    const loadingOrError = this.renderLoadError();
+    if (loadingOrError) return loadingOrError;
     return (
       <Router history={history}>
         <MainBox>{renderAll()}</MainBox>
       </Router>
     );
-  }
+  };
 
   create() {
     return (
@@ -255,7 +346,9 @@ export default class Restaurants extends Module {
             className="container"
             style={{
               width: 'calc(100vh - 120px)',
-              top: 'calc(100vh - 610px)'
+              position: 'relative',
+              top: '50%',
+              transform: 'translateY(-50%)'
             }}
           >
             <div className="field is-horizontal">
@@ -269,6 +362,7 @@ export default class Restaurants extends Module {
                       placeholder="Enter the restaurant's name"
                       className="input"
                       type="text"
+                      ref={nameRef}
                     />
                   </p>
                 </div>
@@ -290,6 +384,7 @@ export default class Restaurants extends Module {
                         className="input"
                         type="tel"
                         placeholder="Enter the restaurant's phone number"
+                        ref={telephoneRef}
                       />
                     </p>
                   </div>
@@ -308,6 +403,7 @@ export default class Restaurants extends Module {
                     <textarea
                       placeholder="Enter the restaurant's location"
                       className="textarea"
+                      ref={locationRef}
                     ></textarea>
                   </div>
                 </div>
@@ -316,8 +412,10 @@ export default class Restaurants extends Module {
 
             <div className="field is-grouped is-grouped-right">
               <p className="control">
-                {/* TODO: Make API call onClick */}
-                <button className="button is-success">
+                <button
+                  className="button is-success"
+                  onClick={createRestaurant}
+                >
                   <span className="icon is-small">
                     <i className="fas fa-plus-circle"></i>
                   </span>
