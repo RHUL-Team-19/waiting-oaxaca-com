@@ -5,3 +5,12 @@ export const capitalise = (word: string) =>
 
 export const redirect = (path: string) =>
   history.push(`${process.env.PUBLIC_URL}/${path}`);
+
+export const cardColours = [
+  'is-primary',
+  'is-link',
+  'is-info',
+  'is-success',
+  'is-warning',
+  'is-danger'
+];
