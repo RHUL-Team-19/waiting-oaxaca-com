@@ -19,7 +19,7 @@ ReactDOM.render(
       <Route path="/restaurants" component={Restaurants} />
       <Route path="/menu" component={Menu} />
       <Route path="/staff" component={Staff} />
-      <Route path="/order" component={Order}/>
+      {/* <Route path="/order" component={Order}/> */}
     </Switch>
   </Router>,
   document.getElementById('root')

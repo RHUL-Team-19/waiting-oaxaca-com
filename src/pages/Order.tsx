@@ -1,3 +1,5 @@
+// @ts-nocheck
+// TODO: refactor this for the new Module
 /* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import Module from '../util/Module';
