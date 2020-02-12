@@ -139,8 +139,6 @@ export default class Module<
             render={(props: { match: { params: { id: string } } }) => {
               const id = Number(props.match.params.id);
               if (!id) return this.renderAll(this.fetch()!);
-              console.log(this.state.cached, this.section, id);
-
               const found = this.state.cached?.find(
                 item => item[`${apiKeys[this.section]}_id`] === Number(id)
               );
