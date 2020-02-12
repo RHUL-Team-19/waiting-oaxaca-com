@@ -22,6 +22,7 @@ const Navbar = () => (
         <NavOption option="restaurants" />
         <NavOption option="menu" />
         <NavOption option="staff" />
+        <NavOption option="Order"/>
       </div>
 
       <div className="navbar-end">
