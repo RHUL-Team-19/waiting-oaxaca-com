@@ -153,8 +153,9 @@ export default class Module<
                   <div
                     className="container"
                     style={{
-                      width: 'calc(100vh - 120px)',
-                      top: 'calc(100vh - 610px)'
+                      padding: '2vw',
+                      justifyContent: 'center',
+                      textAlign: 'center'
                     }}
                   >
                     {this.renderSingle(found)}

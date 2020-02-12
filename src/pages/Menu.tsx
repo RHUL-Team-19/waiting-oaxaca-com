@@ -47,7 +47,16 @@ export default class Menu extends Module<Meal> {
               >
                 <div className="card-image">
                   <figure className="image is-4by3">
-                    <img src={image_url} />
+                    <img
+                      src={image_url}
+                      style={{
+                        maxWidth: '25vw',
+                        margin: 'auto',
+                        boxShadow:
+                          '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                        objectFit: 'cover'
+                      }}
+                    />
                   </figure>
                 </div>
                 <article
@@ -78,11 +87,21 @@ export default class Menu extends Module<Meal> {
           <div>
             <div className="card-image">
               <figure className="image is-150x120">
-                <img src={meal.image_url} alt="Placeholder image" />
+                <img
+                  src={meal.image_url}
+                  style={{
+                    maxWidth: '25vw',
+                    margin: 'auto',
+                    boxShadow:
+                      '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                    objectFit: 'cover',
+                    maxHeight: '14.2vw'
+                  }}
+                />
               </figure>
             </div>
             <div className="card-content">
-              <div className="media">
+              <div className="media" style={{ justifyContent: 'center' }}>
                 <div className="field is-horizontal">
                   <div className="field-label is-normal">
                     <label className="label">ID</label>
@@ -120,24 +139,23 @@ export default class Menu extends Module<Meal> {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="field has-addons is-horizontal">
-                <div className="field-label is-normal">
-                  <label className="label">Price</label>
-                </div>
-                <p className="control">
+                <div className="field has-addons is-horizontal">
+                  <div className="field-label is-normal">
+                    <label className="label">Price</label>
+                  </div>
                   <p className="control">
-                    <a className="button is-static">£</a>
+                    <p className="control">
+                      <a className="button is-static">£</a>
+                    </p>
                   </p>
-                </p>
-                <p className="control">
-                  <input
-                    className="input"
-                    type="text"
-                    defaultValue={meal.price.toFixed(2)}
-                  />
-                </p>
+                  <p className="control">
+                    <input
+                      className="input"
+                      type="text"
+                      defaultValue={meal.price.toFixed(2)}
+                    />
+                  </p>
+                </div>
               </div>
               <br />
 
@@ -152,6 +170,7 @@ export default class Menu extends Module<Meal> {
                         <textarea
                           defaultValue={meal.description}
                           className="textarea"
+                          style={{ minHeight: '4vw' }}
                         ></textarea>
                       </div>
                     </div>
@@ -159,7 +178,10 @@ export default class Menu extends Module<Meal> {
                 </div>
               </div>
 
-              <div className="field is-grouped is-grouped-multiline">
+              <div
+                className="field is-grouped is-grouped-multiline"
+                style={{ justifyContent: 'center' }}
+              >
                 {Object.entries(meal!)
                   .filter(
                     ([field]) =>
