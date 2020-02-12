@@ -35,18 +35,21 @@ export default class Menu extends Module<Meal> {
             textAlign: 'center',
             justifyContent: 'center',
             padding: '2vw',
-            position: 'relative',
-            top: '50%',
-            transform: 'translateY(-50%)'
+            position: 'relative'
           }}
         >
-          {menu.map(({ meal_id, name }, i) => {
+          {menu.map(({ meal_id, name, image_url }, i) => {
             return (
               <div
                 className="column is-one-fifth"
                 key={i}
                 style={{ padding: '1vw' }}
               >
+                <div className="card-image">
+                  <figure className="image is-4by3">
+                    <img src={image_url} />
+                  </figure>
+                </div>
                 <article
                   className={`tile is-child notification ${
                     cardColours[i % cardColours.length]
