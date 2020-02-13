@@ -184,7 +184,7 @@ const renderSingle = (props: {
           </p>
           <p className="control">
             {/* TODO: Reset fields onClick */}
-            <a className="button is-light">Reset</a>
+            <button className="button is-light" type="reset" value="Clear" />
           </p>
         </div>
       </div>
@@ -336,7 +336,11 @@ export default class Order extends Module {
               </p>
               <p className="control">
                 {/* TODO: Reset fields onClick */}
-                <a className="button is-light">Clear</a>
+                <button
+                  className="button is-light"
+                  type="reset"
+                  value="Clear"
+                />
               </p>
             </div>
           </div>
