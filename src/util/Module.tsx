@@ -9,6 +9,7 @@ import { redirect } from './Util';
 import { Restaurant } from '../models/Restaurant';
 import { Meal } from '../models/Meal';
 import { Staff } from '../models/Staff';
+import { Order } from '../models/Order';
 
 type RefData = {
   [index: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
@@ -23,7 +24,7 @@ const apiKeys: { [index: string]: string } = {
 };
 
 export default class Module<
-  T extends Meal | Staff | Restaurant
+  T extends Meal | Staff | Restaurant | Order
 > extends React.Component<ModuleProps, { id: number; cached: T[] | null }> {
   private section: string;
 
