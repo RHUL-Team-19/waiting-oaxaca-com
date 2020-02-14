@@ -4,7 +4,9 @@ import history from '../history';
 import styled from 'styled-components';
 import { Router } from 'react-router-dom';
 import RestClient from '../RestClient';
-import { redirect } from '../util/Util';
+import { redirect, current } from '../util/Util';
+import * as hm from 'typed-rest-client/Handlers';
+import jwtDecode from 'jwt-decode';
 import '../style/style.css';
 
 interface Inputs {
@@ -25,16 +27,18 @@ export default class Login extends React.Component {
   };
 
   validate = () => {
-    /* RestClient.create<Inputs>('/authentication', this.state)
+    /* RestClient.create<{ token: string }>('/authentication', this.state)
       .then(res => {
-        if (res.statusCode === 200) {history.push('/home')};
-        <div class="notification is-warning">
-          <button class="invalid information"></button>
-        </div>
+        if (res.statusCode === 200 && res.result) {
+          const { token } = res.result;
+          RestClient.client.handlers = [new hm.BearerCredentialHandler(token)];
+          current.role = JSON.parse(jwtDecode(token)).Audience;
+          redirect('home');
+        }
       })
       .catch(console.error); */
     if (this.state.user_id === '123' && this.state.password === 'foo') {
-      history.push('/home');
+      redirect('home');
     } else {
       this.setState({ invalidLogin: true });
       setTimeout(() => this.setState({ invalidLogin: false }), 3000);

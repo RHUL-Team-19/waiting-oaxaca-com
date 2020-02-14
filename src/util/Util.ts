@@ -14,3 +14,5 @@ export const cardColours = [
   'is-warning',
   'is-danger'
 ];
+
+export const current = { role: 'staff' };
