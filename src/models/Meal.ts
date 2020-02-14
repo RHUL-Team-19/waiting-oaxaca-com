@@ -1,4 +1,6 @@
 export interface Meal {
+  [index: string]: number | string | boolean;
+
   meal_id: number;
 
   name: string;

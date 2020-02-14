@@ -1,22 +1,23 @@
 /* eslint-disable react/display-name, @typescript-eslint/camelcase, react/prop-types */
 import React from 'react';
 import { redirect, cardColours } from '../util/Util';
-import { Restaurant } from '../models/Restaurant';
 import Module from '../util/Module';
+import { Order } from '../models/Order';
+const staffRef = React.createRef<HTMLInputElement>();
+const tableRef = React.createRef<HTMLInputElement>();
+const paidRef = React.createRef<HTMLInputElement>();
+const ratingRef = React.createRef<HTMLInputElement>();
 
-const nameRef = React.createRef<HTMLInputElement>();
-const telephoneRef = React.createRef<HTMLInputElement>();
-const locationRef = React.createRef<HTMLTextAreaElement>();
-
-export default class Restaurants extends Module<Restaurant> {
+export default class Orders extends Module<Order> {
   constructor(props: { match: { path: string } }) {
     super(props, {
       apiData: {
-        name: nameRef,
-        location: locationRef,
-        telephone_number: telephoneRef
+        staff_id: staffRef,
+        table_id: tableRef,
+        is_paid: paidRef,
+        satisfaction_rating: ratingRef
       },
-      renderAll: (restaurants: Restaurant[]) => (
+      renderAll: (orders: Order[]) => (
         <div
           className="columns is-multiline is-vcentered"
           style={{
@@ -28,7 +29,7 @@ export default class Restaurants extends Module<Restaurant> {
             transform: 'translateY(-50%)'
           }}
         >
-          {restaurants.map(({ restaurant_id, name }, i) => {
+          {orders.map(({ order_id }, i) => {
             return (
               <div
                 className="column is-one-fifth"
@@ -40,13 +41,10 @@ export default class Restaurants extends Module<Restaurant> {
                     cardColours[i % cardColours.length]
                   }`}
                 >
-                  <p className="title">{restaurant_id}</p>
-                  <p className="subtitle">{name}</p>
+                  <p className="title">{order_id}</p>
                   <button
                     className="button is-warning is-small"
-                    onClick={() =>
-                      redirect(`restaurants/find/${restaurant_id}`)
-                    }
+                    onClick={() => redirect(`order/find/${order_id}`)}
                   >
                     <span className="icon is-small">
                       <i className="fas fa-edit"></i>
@@ -61,11 +59,12 @@ export default class Restaurants extends Module<Restaurant> {
       ),
 
       renderSingle: ({
-        restaurant_id,
-        name,
-        telephone_number,
-        location
-      }: Restaurant) => {
+        order_id,
+        staff_id,
+        table_id,
+        is_paid,
+        satisfaction_rating
+      }: Order) => {
         return (
           <div>
             <div className="field is-horizontal">
@@ -78,7 +77,7 @@ export default class Restaurants extends Module<Restaurant> {
                     <input
                       className="input"
                       type="text"
-                      placeholder={restaurant_id.toString()}
+                      placeholder={order_id.toString()}
                       disabled
                     />
                   </p>
@@ -88,16 +87,16 @@ export default class Restaurants extends Module<Restaurant> {
 
             <div className="field is-horizontal">
               <div className="field-label is-normal">
-                <label className="label">Name</label>
+                <label className="label">Created by</label>
               </div>
               <div className="field-body">
                 <div className="field">
                   <p className="control">
                     <input
-                      defaultValue={name}
+                      defaultValue={staff_id}
                       className="input"
                       type="text"
-                      ref={nameRef}
+                      ref={staffRef}
                     />
                   </p>
                 </div>
@@ -106,45 +105,61 @@ export default class Restaurants extends Module<Restaurant> {
 
             <div className="field is-horizontal">
               <div className="field-label is-normal">
-                <label className="label">Telephone number</label>
+                <label className="label">Table</label>
               </div>
               <div className="field-body">
                 <div className="field">
-                  <div className="field has-addons">
-                    <p className="control">
-                      <a className="button is-static">+44</a>
-                    </p>
-                    <p className="control">
-                      <input
-                        defaultValue={telephone_number}
-                        className="input"
-                        type="tel"
-                        placeholder="Restaurant phone number"
-                        ref={telephoneRef}
-                      />
-                    </p>
-                  </div>
-                  <p className="help">Do not enter the first zero</p>
+                  <p className="control">
+                    <input
+                      defaultValue={table_id}
+                      className="input"
+                      type="text"
+                      ref={tableRef}
+                    />
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="field is-horizontal">
               <div className="field-label is-normal">
-                <label className="label">Location</label>
+                <label className="label">Paid</label>
               </div>
               <div className="field-body">
                 <div className="field">
-                  <div className="control">
-                    <textarea
-                      defaultValue={location}
-                      className="textarea"
-                      ref={locationRef}
-                    ></textarea>
+                  <div className="field">
+                    <input
+                      id="switchColorDefault"
+                      type="checkbox"
+                      name="switchColorDefault"
+                      className="switch"
+                      checked={is_paid}
+                    />
+                    <label htmlFor="switchColorDefault"></label>
                   </div>
                 </div>
               </div>
             </div>
+
+            {typeof satisfaction_rating !== 'undefined' ? (
+              <div className="field is-horizontal">
+                <div className="field-label is-normal">
+                  <label className="label">Rating</label>
+                </div>
+                <div className="field-body">
+                  <div className="field">
+                    <p className="control">
+                      <input
+                        defaultValue={satisfaction_rating}
+                        className="input"
+                        type="text"
+                        ref={ratingRef}
+                      />
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
         );
       },
@@ -154,16 +169,18 @@ export default class Restaurants extends Module<Restaurant> {
           <div>
             <div className="field is-horizontal">
               <div className="field-label is-normal">
-                <label className="label">Name</label>
+                {/* TODO: Infer Staff ID from logged in credentials */}
+                <label className="label">Staff ID</label>
               </div>
               <div className="field-body">
                 <div className="field">
                   <p className="control">
                     <input
-                      placeholder="Enter the restaurant's name"
+                      placeholder="123"
+                      disabled
                       className="input"
                       type="text"
-                      ref={nameRef}
+                      ref={staffRef}
                     />
                   </p>
                 </div>
@@ -172,44 +189,23 @@ export default class Restaurants extends Module<Restaurant> {
 
             <div className="field is-horizontal">
               <div className="field-label is-normal">
-                <label className="label">Telephone number</label>
+                <label className="label">Table ID</label>
               </div>
               <div className="field-body">
                 <div className="field">
-                  <div className="field has-addons">
-                    <p className="control">
-                      <a className="button is-static">+44</a>
-                    </p>
-                    <p className="control">
-                      <input
-                        className="input"
-                        type="tel"
-                        placeholder="Enter the restaurant's phone number"
-                        ref={telephoneRef}
-                      />
-                    </p>
-                  </div>
-                  <p className="help">Do not enter the first zero</p>
+                  <p className="control">
+                    <input
+                      placeholder="Enter the table ID"
+                      className="input"
+                      type="text"
+                      ref={tableRef}
+                    />
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div className="field is-horizontal">
-              <div className="field-label is-normal">
-                <label className="label">Location</label>
-              </div>
-              <div className="field-body">
-                <div className="field">
-                  <div className="control">
-                    <textarea
-                      placeholder="Enter the restaurant's location"
-                      className="textarea"
-                      ref={locationRef}
-                    ></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* TODO: Create a container to hold Meal[] */}
           </div>
         );
       }

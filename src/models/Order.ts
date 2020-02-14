@@ -1,4 +1,6 @@
 export interface Order {
+  [index: string]: number | string | boolean | undefined;
+
   order_id: number;
 
   staff_id: number;

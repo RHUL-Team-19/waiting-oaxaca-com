@@ -1,4 +1,6 @@
 export interface Staff {
+  [index: string]: number | string | boolean;
+
   staff_id: number;
 
   restaurant_id: number;

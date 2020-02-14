@@ -1,4 +1,6 @@
 export interface Table {
+  [index: string]: number | boolean;
+
   table_id: number;
 
   restaurant_id: number;
